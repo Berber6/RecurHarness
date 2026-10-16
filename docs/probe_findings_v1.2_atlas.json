@@ -1,0 +1,2150 @@
+[
+  {
+    "command": "atlas version",
+    "stdout": "atlas unofficial version - development\nhttps://github.com/ariga/atlas/releases/latest\nTo download an official version, visit: https://atlasgo.io/getting-started#installation\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas version --help",
+    "stdout": "Prints this Atlas CLI version information.\n\nUsage:\n  atlas version [flags]\n\nFlags:\n  -h, --help   help for version\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas version extra args",
+    "stdout": "atlas unofficial version - development\nhttps://github.com/ariga/atlas/releases/latest\nTo download an official version, visit: https://atlasgo.io/getting-started#installation\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas license",
+    "stdout": "LICENSE\nAtlas is licensed under Apache 2.0 as found in https://github.com/ariga/atlas/blob/master/LICENSE.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas license --help",
+    "stdout": "Display license information\n\nUsage:\n  atlas license [flags]\n\nFlags:\n  -h, --help   help for license\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas --help",
+    "stdout": "Manage your database schema as code\n\nUsage:\n  atlas [command]\n\nAvailable Commands:\n  completion  Generate the autocompletion script for the specified shell\n  help        Help about any command\n  license     Display license information\n  migrate     Manage versioned migration files\n  schema      Work with atlas schemas.\n  version     Prints this Atlas CLI version information.\n\nFlags:\n  -h, --help   help for atlas\n\nUse \"atlas [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas -h",
+    "stdout": "Manage your database schema as code\n\nUsage:\n  atlas [command]\n\nAvailable Commands:\n  completion  Generate the autocompletion script for the specified shell\n  help        Help about any command\n  license     Display license information\n  migrate     Manage versioned migration files\n  schema      Work with atlas schemas.\n  version     Prints this Atlas CLI version information.\n\nFlags:\n  -h, --help   help for atlas\n\nUse \"atlas [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas ",
+    "stdout": "Manage your database schema as code\n\nUsage:\n  atlas [command]\n\nAvailable Commands:\n  completion  Generate the autocompletion script for the specified shell\n  help        Help about any command\n  license     Display license information\n  migrate     Manage versioned migration files\n  schema      Work with atlas schemas.\n  version     Prints this Atlas CLI version information.\n\nFlags:\n  -h, --help   help for atlas\n\nUse \"atlas [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas badcmd",
+    "stdout": "",
+    "stderr": "Error: unknown command \"badcmd\" for \"atlas\"\nRun 'atlas --help' for usage.\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas help",
+    "stdout": "Manage your database schema as code\n\nUsage:\n  atlas [command]\n\nAvailable Commands:\n  completion  Generate the autocompletion script for the specified shell\n  help        Help about any command\n  license     Display license information\n  migrate     Manage versioned migration files\n  schema      Work with atlas schemas.\n  version     Prints this Atlas CLI version information.\n\nFlags:\n  -h, --help   help for atlas\n\nUse \"atlas [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas help schema",
+    "stdout": "The `atlas schema` command groups subcommands working with declarative Atlas schemas.\n\nUsage:\n  atlas schema [command]\n\nAvailable Commands:\n  apply       Apply an atlas schema to a target database.\n  clean       Removes all objects from the connected database.\n  diff        Calculate and print the diff between two schemas.\n  fmt         Formats Atlas HCL files\n  inspect     Inspect a database and print its schema in Atlas DDL syntax.\n\nFlags:\n  -c, --config string        select config (project) file using URL format (default \"file://atlas.hcl\")\n      --env string           set which env from the config file to use\n  -h, --help                 help for schema\n      --var <name>=<value>   input variables (default [])\n\nUse \"atlas schema [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas help migrate",
+    "stdout": "'atlas migrate' wraps several sub-commands for migration management.\n\nUsage:\n  atlas migrate [command]\n\nAvailable Commands:\n  apply       Applies pending migration files on the connected database.\n  diff        Compute the diff between the migration directory and a desired state and create a new migration file.\n  hash        Hash (re-)creates an integrity hash file for the migration directory.\n  import      Import a migration directory from another migration management tool to the Atlas format.\n  lint        Run analysis on the migration directory\n  new         Creates a new empty migration file in the migration directory.\n  set         Set the current version of the migration history table.\n  status      Get information about the current migration status.\n  validate    Validates the migration directories checksum and SQL statements.\n\nFlags:\n  -c, --config string        select config (project) file using URL format (default \"file://atlas.hcl\")\n      --env string           set which env from the config file to use\n  -h, --help                 help for migrate\n      --var <name>=<value>   input variables (default [])\n\nUse \"atlas migrate [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas help badcmd",
+    "stdout": "Unknown help topic [`badcmd`]\nUsage:\n  atlas [command]\n\nAvailable Commands:\n  completion  Generate the autocompletion script for the specified shell\n  help        Help about any command\n  license     Display license information\n  migrate     Manage versioned migration files\n  schema      Work with atlas schemas.\n  version     Prints this Atlas CLI version information.\n\nUse \"atlas [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas --version",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --version\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas -v",
+    "stdout": "",
+    "stderr": "Error: unknown shorthand flag: 'v' in -v\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema",
+    "stdout": "The `atlas schema` command groups subcommands working with declarative Atlas schemas.\n\nUsage:\n  atlas schema [command]\n\nAvailable Commands:\n  apply       Apply an atlas schema to a target database.\n  clean       Removes all objects from the connected database.\n  diff        Calculate and print the diff between two schemas.\n  fmt         Formats Atlas HCL files\n  inspect     Inspect a database and print its schema in Atlas DDL syntax.\n\nFlags:\n  -c, --config string        select config (project) file using URL format (default \"file://atlas.hcl\")\n      --env string           set which env from the config file to use\n  -h, --help                 help for schema\n      --var <name>=<value>   input variables (default [])\n\nUse \"atlas schema [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema --help",
+    "stdout": "The `atlas schema` command groups subcommands working with declarative Atlas schemas.\n\nUsage:\n  atlas schema [command]\n\nAvailable Commands:\n  apply       Apply an atlas schema to a target database.\n  clean       Removes all objects from the connected database.\n  diff        Calculate and print the diff between two schemas.\n  fmt         Formats Atlas HCL files\n  inspect     Inspect a database and print its schema in Atlas DDL syntax.\n\nFlags:\n  -c, --config string        select config (project) file using URL format (default \"file://atlas.hcl\")\n      --env string           set which env from the config file to use\n  -h, --help                 help for schema\n      --var <name>=<value>   input variables (default [])\n\nUse \"atlas schema [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema badsub",
+    "stdout": "The `atlas schema` command groups subcommands working with declarative Atlas schemas.\n\nUsage:\n  atlas schema [command]\n\nAvailable Commands:\n  apply       Apply an atlas schema to a target database.\n  clean       Removes all objects from the connected database.\n  diff        Calculate and print the diff between two schemas.\n  fmt         Formats Atlas HCL files\n  inspect     Inspect a database and print its schema in Atlas DDL syntax.\n\nFlags:\n  -c, --config string        select config (project) file using URL format (default \"file://atlas.hcl\")\n      --env string           set which env from the config file to use\n  -h, --help                 help for schema\n      --var <name>=<value>   input variables (default [])\n\nUse \"atlas schema [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate",
+    "stdout": "'atlas migrate' wraps several sub-commands for migration management.\n\nUsage:\n  atlas migrate [command]\n\nAvailable Commands:\n  apply       Applies pending migration files on the connected database.\n  diff        Compute the diff between the migration directory and a desired state and create a new migration file.\n  hash        Hash (re-)creates an integrity hash file for the migration directory.\n  import      Import a migration directory from another migration management tool to the Atlas format.\n  lint        Run analysis on the migration directory\n  new         Creates a new empty migration file in the migration directory.\n  set         Set the current version of the migration history table.\n  status      Get information about the current migration status.\n  validate    Validates the migration directories checksum and SQL statements.\n\nFlags:\n  -c, --config string        select config (project) file using URL format (default \"file://atlas.hcl\")\n      --env string           set which env from the config file to use\n  -h, --help                 help for migrate\n      --var <name>=<value>   input variables (default [])\n\nUse \"atlas migrate [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate --help",
+    "stdout": "'atlas migrate' wraps several sub-commands for migration management.\n\nUsage:\n  atlas migrate [command]\n\nAvailable Commands:\n  apply       Applies pending migration files on the connected database.\n  diff        Compute the diff between the migration directory and a desired state and create a new migration file.\n  hash        Hash (re-)creates an integrity hash file for the migration directory.\n  import      Import a migration directory from another migration management tool to the Atlas format.\n  lint        Run analysis on the migration directory\n  new         Creates a new empty migration file in the migration directory.\n  set         Set the current version of the migration history table.\n  status      Get information about the current migration status.\n  validate    Validates the migration directories checksum and SQL statements.\n\nFlags:\n  -c, --config string        select config (project) file using URL format (default \"file://atlas.hcl\")\n      --env string           set which env from the config file to use\n  -h, --help                 help for migrate\n      --var <name>=<value>   input variables (default [])\n\nUse \"atlas migrate [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate badsub",
+    "stdout": "'atlas migrate' wraps several sub-commands for migration management.\n\nUsage:\n  atlas migrate [command]\n\nAvailable Commands:\n  apply       Applies pending migration files on the connected database.\n  diff        Compute the diff between the migration directory and a desired state and create a new migration file.\n  hash        Hash (re-)creates an integrity hash file for the migration directory.\n  import      Import a migration directory from another migration management tool to the Atlas format.\n  lint        Run analysis on the migration directory\n  new         Creates a new empty migration file in the migration directory.\n  set         Set the current version of the migration history table.\n  status      Get information about the current migration status.\n  validate    Validates the migration directories checksum and SQL statements.\n\nFlags:\n  -c, --config string        select config (project) file using URL format (default \"file://atlas.hcl\")\n      --env string           set which env from the config file to use\n  -h, --help                 help for migrate\n      --var <name>=<value>   input variables (default [])\n\nUse \"atlas migrate [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas completion",
+    "stdout": "Generate the autocompletion script for atlas for the specified shell.\nSee each sub-command's help for details on how to use the generated script.\n\nUsage:\n  atlas completion [command]\n\nAvailable Commands:\n  bash        Generate the autocompletion script for bash\n  fish        Generate the autocompletion script for fish\n  powershell  Generate the autocompletion script for powershell\n  zsh         Generate the autocompletion script for zsh\n\nFlags:\n  -h, --help   help for completion\n\nUse \"atlas completion [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas completion --help",
+    "stdout": "Generate the autocompletion script for atlas for the specified shell.\nSee each sub-command's help for details on how to use the generated script.\n\nUsage:\n  atlas completion [command]\n\nAvailable Commands:\n  bash        Generate the autocompletion script for bash\n  fish        Generate the autocompletion script for fish\n  powershell  Generate the autocompletion script for powershell\n  zsh         Generate the autocompletion script for zsh\n\nFlags:\n  -h, --help   help for completion\n\nUse \"atlas completion [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas completion badshell",
+    "stdout": "Generate the autocompletion script for atlas for the specified shell.\nSee each sub-command's help for details on how to use the generated script.\n\nUsage:\n  atlas completion [command]\n\nAvailable Commands:\n  bash        Generate the autocompletion script for bash\n  fish        Generate the autocompletion script for fish\n  powershell  Generate the autocompletion script for powershell\n  zsh         Generate the autocompletion script for zsh\n\nFlags:\n  -h, --help   help for completion\n\nUse \"atlas completion [command] --help\" for more information about a command.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas completion bash --help",
+    "stdout": "Generate the autocompletion script for the bash shell.\n\nThis script depends on the 'bash-completion' package.\nIf it is not installed already, you can install it via your OS's package manager.\n\nTo load completions in your current shell session:\n\n\tsource <(atlas completion bash)\n\nTo load completions for every new session, execute once:\n\n#### Linux:\n\n\tatlas completion bash > /etc/bash_completion.d/atlas\n\n#### macOS:\n\n\tatlas completion bash > $(brew --prefix)/etc/bash_completion.d/atlas\n\nYou will need to start a new shell for this setup to take effect.\n\nUsage:\n  atlas completion bash\n\nFlags:\n  -h, --help              help for bash\n      --no-descriptions   disable completion descriptions\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas completion zsh --help",
+    "stdout": "Generate the autocompletion script for the zsh shell.\n\nIf shell completion is not already enabled in your environment you will need\nto enable it.  You can execute the following once:\n\n\techo \"autoload -U compinit; compinit\" >> ~/.zshrc\n\nTo load completions in your current shell session:\n\n\tsource <(atlas completion zsh)\n\nTo load completions for every new session, execute once:\n\n#### Linux:\n\n\tatlas completion zsh > \"${fpath[1]}/_atlas\"\n\n#### macOS:\n\n\tatlas completion zsh > $(brew --prefix)/share/zsh/site-functions/_atlas\n\nYou will need to start a new shell for this setup to take effect.\n\nUsage:\n  atlas completion zsh [flags]\n\nFlags:\n  -h, --help              help for zsh\n      --no-descriptions   disable completion descriptions\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u mysql://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: mysql: query system variables: dial tcp [::1]:3306: connect: connection refused\n",
+    "exit_code": 1,
+    "note": "scheme=mysql"
+  },
+  {
+    "command": "atlas schema inspect -u mariadb://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: mysql: query system variables: dial tcp [::1]:3306: connect: connection refused\n",
+    "exit_code": 1,
+    "note": "scheme=mariadb"
+  },
+  {
+    "command": "atlas schema inspect -u postgres://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: postgres: scanning system variables: dial tcp [::1]:3306: connect: connection refused\n",
+    "exit_code": 1,
+    "note": "scheme=postgres"
+  },
+  {
+    "command": "atlas schema inspect -u postgresql://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: postgres: scanning system variables: dial tcp [::1]:3306: connect: connection refused\n",
+    "exit_code": 1,
+    "note": "scheme=postgresql"
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: sqlite: querying schemas: unable to open database file: no such file or directory\n",
+    "exit_code": 1,
+    "note": "scheme=sqlite"
+  },
+  {
+    "command": "atlas schema inspect -u libsql://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: sqlite: querying schemas: failed to execute SQL:\nPost \"https://user:***@localhost:3306/db/v2/pipeline\": dial tcp [::1]:3306: connect: connection refused\n",
+    "exit_code": 1,
+    "note": "scheme=libsql"
+  },
+  {
+    "command": "atlas schema inspect -u tidb://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: unknown driver \"tidb\". See: https://atlasgo.io/url\n",
+    "exit_code": 1,
+    "note": "scheme=tidb"
+  },
+  {
+    "command": "atlas schema inspect -u cockroachdb://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: unknown driver \"cockroachdb\". See: https://atlasgo.io/url\n",
+    "exit_code": 1,
+    "note": "scheme=cockroachdb"
+  },
+  {
+    "command": "atlas schema inspect -u crdb-postgres://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: unknown driver \"crdb-postgres\". See: https://atlasgo.io/url\n",
+    "exit_code": 1,
+    "note": "scheme=crdb-postgres"
+  },
+  {
+    "command": "atlas schema inspect -u sqlserver://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: unknown driver \"sqlserver\". See: https://atlasgo.io/url\n",
+    "exit_code": 1,
+    "note": "scheme=sqlserver"
+  },
+  {
+    "command": "atlas schema inspect -u mssql://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: unknown driver \"mssql\". See: https://atlasgo.io/url\n",
+    "exit_code": 1,
+    "note": "scheme=mssql"
+  },
+  {
+    "command": "atlas schema inspect -u clickhouse://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: unknown driver \"clickhouse\". See: https://atlasgo.io/url\n",
+    "exit_code": 1,
+    "note": "scheme=clickhouse"
+  },
+  {
+    "command": "atlas schema inspect -u redshift://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: unknown driver \"redshift\". See: https://atlasgo.io/url\n",
+    "exit_code": 1,
+    "note": "scheme=redshift"
+  },
+  {
+    "command": "atlas schema inspect -u file://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: stat localhost:3306/db: no such file or directory\n",
+    "exit_code": 1,
+    "note": "scheme=file"
+  },
+  {
+    "command": "atlas schema inspect -u docker://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: unsupported docker image \"localhost:3306\"\n",
+    "exit_code": 1,
+    "note": "scheme=docker"
+  },
+  {
+    "command": "atlas schema inspect -u aws://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: unknown driver \"aws\". See: https://atlasgo.io/url\n",
+    "exit_code": 1,
+    "note": "scheme=aws"
+  },
+  {
+    "command": "atlas schema inspect -u awsrds://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: unknown driver \"awsrds\". See: https://atlasgo.io/url\n",
+    "exit_code": 1,
+    "note": "scheme=awsrds"
+  },
+  {
+    "command": "atlas schema inspect -u gcp://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: unknown driver \"gcp\". See: https://atlasgo.io/url\n",
+    "exit_code": 1,
+    "note": "scheme=gcp"
+  },
+  {
+    "command": "atlas schema inspect -u atlas://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: atlas remote state is not supported by the community version of Atlas.\n\nInstall the non-community version instead:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nFor more installtion options, see: https://atlasgo.io/docs#installation\n",
+    "exit_code": 1,
+    "note": "scheme=atlas"
+  },
+  {
+    "command": "atlas schema inspect -u ent://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: ent:// scheme is not supported by the community version of Atlas.\n\nInstall the non-community version instead:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nFor more installtion options, see: https://atlasgo.io/docs#installation\n",
+    "exit_code": 1,
+    "note": "scheme=ent"
+  },
+  {
+    "command": "atlas schema inspect -u unknown://user:pass@localhost:3306/db",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: unknown driver \"unknown\". See: https://atlasgo.io/url\n",
+    "exit_code": 1,
+    "note": "scheme=unknown"
+  },
+  {
+    "command": "atlas schema inspect -u ://x",
+    "stdout": "",
+    "stderr": "Error: missing protocol scheme\n",
+    "exit_code": 1,
+    "note": "scheme="
+  },
+  {
+    "command": "atlas schema inspect -u docker://mysql/8/test",
+    "stdout": "",
+    "stderr": "Error: exec: \"docker\": executable file not found in $PATH\n",
+    "exit_code": 1,
+    "note": "docker image=mysql/8/test"
+  },
+  {
+    "command": "atlas schema inspect -u docker://mysql/test",
+    "stdout": "",
+    "stderr": "Error: exec: \"docker\": executable file not found in $PATH\n",
+    "exit_code": 1,
+    "note": "docker image=mysql/test"
+  },
+  {
+    "command": "atlas schema inspect -u docker://postgres/15/test",
+    "stdout": "",
+    "stderr": "Error: exec: \"docker\": executable file not found in $PATH\n",
+    "exit_code": 1,
+    "note": "docker image=postgres/15/test"
+  },
+  {
+    "command": "atlas schema inspect -u docker://postgres/test",
+    "stdout": "",
+    "stderr": "Error: exec: \"docker\": executable file not found in $PATH\n",
+    "exit_code": 1,
+    "note": "docker image=postgres/test"
+  },
+  {
+    "command": "atlas schema inspect -u docker://mariadb/test",
+    "stdout": "",
+    "stderr": "Error: exec: \"docker\": executable file not found in $PATH\n",
+    "exit_code": 1,
+    "note": "docker image=mariadb/test"
+  },
+  {
+    "command": "atlas schema inspect -u docker://sqlite/test",
+    "stdout": "",
+    "stderr": "Error: unsupported docker image \"sqlite\"\n",
+    "exit_code": 1,
+    "note": "docker image=sqlite/test"
+  },
+  {
+    "command": "atlas schema inspect -u docker://clickhouse/test",
+    "stdout": "",
+    "stderr": "Error: exec: \"docker\": executable file not found in $PATH\n",
+    "exit_code": 1,
+    "note": "docker image=clickhouse/test"
+  },
+  {
+    "command": "atlas schema inspect -u docker://tidb/test",
+    "stdout": "",
+    "stderr": "Error: unsupported docker image \"tidb\"\n",
+    "exit_code": 1,
+    "note": "docker image=tidb/test"
+  },
+  {
+    "command": "atlas schema inspect -u docker://cockroach/test",
+    "stdout": "",
+    "stderr": "Error: unsupported docker image \"cockroach\"\n",
+    "exit_code": 1,
+    "note": "docker image=cockroach/test"
+  },
+  {
+    "command": "atlas schema inspect -u docker://sqlserver/test",
+    "stdout": "",
+    "stderr": "Error: exec: \"docker\": executable file not found in $PATH\n",
+    "exit_code": 1,
+    "note": "docker image=sqlserver/test"
+  },
+  {
+    "command": "atlas schema inspect -u docker://redshift/test",
+    "stdout": "",
+    "stderr": "Error: unsupported docker image \"redshift\"\n",
+    "exit_code": 1,
+    "note": "docker image=redshift/test"
+  },
+  {
+    "command": "atlas schema inspect -u docker://foo/bar",
+    "stdout": "",
+    "stderr": "Error: unsupported docker image \"foo\"\n",
+    "exit_code": 1,
+    "note": "docker image=foo/bar"
+  },
+  {
+    "command": "atlas schema inspect -u docker://mysql",
+    "stdout": "",
+    "stderr": "Error: exec: \"docker\": executable file not found in $PATH\n",
+    "exit_code": 1,
+    "note": "docker image=mysql"
+  },
+  {
+    "command": "atlas schema inspect -u docker://mysql:8",
+    "stdout": "",
+    "stderr": "Error: unsupported docker image \"mysql:8\"\n",
+    "exit_code": 1,
+    "note": "docker image=mysql:8"
+  },
+  {
+    "command": "atlas schema inspect -u docker://",
+    "stdout": "",
+    "stderr": "Error: unsupported docker image \"\"\n",
+    "exit_code": 1,
+    "note": "docker image="
+  },
+  {
+    "command": "atlas schema apply",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"url\" not set\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://a.db",
+    "stdout": "",
+    "stderr": "Error: one of flag(s) \"file\" or \"to\" is required\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply --to file://x.hcl",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"url\" not set\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema clean",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"url\" not set\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema diff",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"from\", \"to\" not set\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema diff --from sqlite://a.db",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"to\" not set\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema diff --to file://x.hcl",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"from\" not set\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply",
+    "stdout": "",
+    "stderr": "Error: sql/migrate: stat migrations: no such file or directory\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate diff",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"to\", \"dev-url\" not set\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate diff --dev-url sqlite://dev?mode=memory",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"to\" not set\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate hash",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate new",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate set",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: missing driver. See: https://atlasgo.io/url\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate status",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: missing driver. See: https://atlasgo.io/url\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate validate",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate lint",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"dev-url\" not set\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate import",
+    "stdout": "",
+    "stderr": "Error: cannot import a migration directory already in \"atlas\" format\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate validate --dir file:///tmp/w/mig1",
+    "stdout": "You have a checksum error in your migration directory.\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum file not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate hash --dir file:///tmp/w/mig1",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate status -u sqlite://s.db --dir file:///tmp/w/mig1",
+    "stdout": "Migration Status: PENDING\n  -- Current Version: No migration applied yet\n  -- Next Version:    1\n  -- Executed Files:  0\n  -- Pending Files:   1\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate status --dir file:///tmp/w/mig1",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: missing driver. See: https://atlasgo.io/url\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://s.db --dir file:///tmp/w/mig1",
+    "stdout": "Migrating to version 1 (1 migrations in total):\n\n  -- migrating version 1\n    -> CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT);\n  -- ok (3.7259ms)\n\n  -------------------------\n  -- 5.321599ms\n  -- 1 migration\n  -- 1 sql statement\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://s.db --dir file:///tmp/w/mig1 --dry-run",
+    "stdout": "No migration files to execute\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate lint --dir file:///tmp/w/mig1 --dev-url sqlite://dev?mode=memory --latest 1",
+    "stdout": "Analyzing changes until version 1 (1 migration in total):\n\n  -- analyzing version 1\n    -- no diagnostics found\n  -- ok (3.9\u00b5s)\n\n  -------------------------\n  -- 2.464ms\n  -- 1 version ok\n  -- 1 schema change\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate set 1 -u sqlite://s.db --dir file:///tmp/w/mig1",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate set abc -u sqlite://s.db --dir file:///tmp/w/mig1",
+    "stdout": "",
+    "stderr": "Error: migration with version \"abc\" not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://s.db",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db",
+    "stdout": "table \"atlas_schema_revisions\" {\n  schema = schema.main\n  column \"version\" {\n    null = false\n    type = text\n  }\n  column \"description\" {\n    null = false\n    type = text\n  }\n  column \"type\" {\n    null    = false\n    type    = integer\n    default = 2\n  }\n  column \"applied\" {\n    null    = false\n    type    = integer\n    default = 0\n  }\n  column \"total\" {\n    null    = false\n    type    = integer\n    default = 0\n  }\n  column \"executed_at\" {\n    null = false\n    type = datetime\n  }\n  column \"execution_time\" {\n    null = false\n    type = integer\n  }\n  column \"error\" {\n    null = true\n    type = text\n  }\n  column \"error_stmt\" {\n    null = true\n    type = text\n  }\n  column \"hash\" {\n    null = false\n    type = text\n  }\n  column \"partial_hashes\" {\n    null = true\n    type = json\n  }\n  column \"operator_version\" {\n    null = false\n    type = text\n  }\n  primary_key {\n    columns = [column.version]\n  }\n}\ntable \"users\" {\n  schema = schema.main\n  column \"id\" {\n    null = true\n    type = integer\n  }\n  column \"name\" {\n    null = true\n    type = text\n  }\n  primary_key {\n    columns = [column.id]\n  }\n}\nschema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ json . }}",
+    "stdout": "{\"schemas\":[{\"name\":\"main\",\"tables\":[{\"name\":\"atlas_schema_revisions\",\"columns\":[{\"name\":\"version\",\"type\":\"TEXT\"},{\"name\":\"description\",\"type\":\"TEXT\"},{\"name\":\"type\",\"type\":\"INTEGER\"},{\"name\":\"applied\",\"type\":\"INTEGER\"},{\"name\":\"total\",\"type\":\"INTEGER\"},{\"name\":\"executed_at\",\"type\":\"datetime\"},{\"name\":\"execution_time\",\"type\":\"INTEGER\"},{\"name\":\"error\",\"type\":\"TEXT\",\"null\":true},{\"name\":\"error_stmt\",\"type\":\"TEXT\",\"null\":true},{\"name\":\"hash\",\"type\":\"TEXT\"},{\"name\":\"partial_hashes\",\"type\":\"json\",\"null\":true},{\"name\":\"operator_version\",\"type\":\"TEXT\"}],\"primary_key\":{\"parts\":[{\"column\":\"version\"}]}},{\"name\":\"users\",\"columns\":[{\"name\":\"id\",\"type\":\"INTEGER\",\"null\":true},{\"name\":\"name\",\"type\":\"TEXT\",\"null\":true}],\"primary_key\":{\"parts\":[{\"column\":\"id\"}]}}]}]}",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ sql . }}",
+    "stdout": "-- Create \"atlas_schema_revisions\" table\nCREATE TABLE `atlas_schema_revisions` (`version` text NOT NULL, `description` text NOT NULL, `type` integer NOT NULL DEFAULT 2, `applied` integer NOT NULL DEFAULT 0, `total` integer NOT NULL DEFAULT 0, `executed_at` datetime NOT NULL, `execution_time` integer NOT NULL, `error` text NULL, `error_stmt` text NULL, `hash` text NOT NULL, `partial_hashes` json NULL, `operator_version` text NOT NULL, PRIMARY KEY (`version`));\n-- Create \"users\" table\nCREATE TABLE `users` (`id` integer NULL, `name` text NULL, PRIMARY KEY (`id`));\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ mermaid . }}",
+    "stdout": "erDiagram\n    atlas_schema_revisions {\n      text version PK\n      text description\n      integer type\n      integer applied\n      integer total\n      datetime executed_at\n      integer execution_time\n      text error\n      text error_stmt\n      text hash\n      json partial_hashes\n      text operator_version\n    }\n    users {\n      integer id PK\n      text name\n    }\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ bogus . }}",
+    "stdout": "",
+    "stderr": "Error: parse log format: template: format:1: function \"bogus\" not defined\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ json . ",
+    "stdout": "",
+    "stderr": "Error: parse log format: template: format:1: unclosed action\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema diff --from file://schema.sql --to file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "-- Create \"posts\" table\nCREATE TABLE `posts` (`id` int NOT NULL, `user_id` int NOT NULL, CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE);\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema diff --from sqlite://mig1/s.db --to file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "-- Disable the enforcement of foreign-keys constraints\nPRAGMA foreign_keys = off;\n-- Drop \"atlas_schema_revisions\" table\nDROP TABLE `atlas_schema_revisions`;\n-- Create \"new_users\" table\nCREATE TABLE `new_users` (`id` int NOT NULL, `name` varchar NULL, PRIMARY KEY (`id`));\n-- Copy rows from old table \"users\" to new temporary table \"new_users\"\nINSERT INTO `new_users` (`id`, `name`) SELECT `id`, `name` FROM `users`;\n-- Drop \"users\" table after copying rows\nDROP TABLE `users`;\n-- Rename temporary table \"new_users\" to \"users\"\nALTER TABLE `new_users` RENAME TO `users`;\n-- Create \"posts\" table\nCREATE TABLE `posts` (`id` int NOT NULL, `user_id` int NOT NULL, CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE);\n-- Enable back the enforcement of foreign-keys constraints\nPRAGMA foreign_keys = on;\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema apply -u sqlite://newdb.db --to file://schema.hcl --dev-url sqlite://dev?mode=memory --dry-run",
+    "stdout": "-- Planned Changes:\n-- Create \"users\" table\nCREATE TABLE `users` (\n  `id` int NOT NULL,\n  `name` varchar NULL,\n  PRIMARY KEY (`id`)\n);\n-- Create \"posts\" table\nCREATE TABLE `posts` (\n  `id` int NOT NULL,\n  `user_id` int NOT NULL,\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n);\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema apply -u sqlite://newdb.db --to file://schema.hcl --dev-url sqlite://dev?mode=memory --auto-approve",
+    "stdout": "-- Planned Changes:\n-- Create \"users\" table\nCREATE TABLE `users` (\n  `id` int NOT NULL,\n  `name` varchar NULL,\n  PRIMARY KEY (`id`)\n);\n-- Create \"posts\" table\nCREATE TABLE `posts` (\n  `id` int NOT NULL,\n  `user_id` int NOT NULL,\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n);\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema clean -u sqlite://newdb.db --dry-run",
+    "stdout": "",
+    "stderr": "Abort: 'atlas schema clean --dry-run' is not supported by the community version.\n\nTo install the non-community version of Atlas, use the following command:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nOr, visit the website to see all installation options:\n\n\thttps://atlasgo.io/docs#installation\n\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema clean -u sqlite://newdb.db --auto-approve",
+    "stdout": "-- Planned Changes:\n-- Disable the enforcement of foreign-keys constraints\nPRAGMA foreign_keys = off;\n-- Drop \"users\" table\nDROP TABLE `users`;\n-- Drop \"posts\" table\nDROP TABLE `posts`;\n-- Enable back the enforcement of foreign-keys constraints\nPRAGMA foreign_keys = on;\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema apply -u sqlite://newdb.db --to file://bad.hcl --dev-url sqlite://dev?mode=memory --dry-run",
+    "stdout": "",
+    "stderr": "Error: bad.hcl:3,12-16: Unknown column.type; There is no type named \"intt\". Did you mean \"int8\"?\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://mig1/s.db --tx-mode bogus",
+    "stdout": "Migrating to version 20260922014845 from 1 (1 migrations in total):\n\n    unknown tx-mode \"bogus\"\n\n  -------------------------\n  -- -2562047h47m16.854775808s\n",
+    "stderr": "Error: unknown tx-mode \"bogus\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://mig1/s.db --exec-order bogus",
+    "stdout": "",
+    "stderr": "Error: unknown execution order: \"bogus\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://newdb.db --tx-mode bogus --to file://schema.hcl --dev-url sqlite://dev?mode=memory --dry-run",
+    "stdout": "",
+    "stderr": "Error: unknown tx-mode \"bogus\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate status -u sqlite://mig1/s.db --lock-timeout notaduration",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --lock-timeout\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate status -u sqlite://mig1/s.db --lock-timeout -5s",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --lock-timeout\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate new x --dir-format bogus",
+    "stdout": "",
+    "stderr": "Error: unknown dir format \"bogus\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate new x --dir bogus://x",
+    "stdout": "",
+    "stderr": "Error: unsupported driver \"bogus\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate new --dir file://nodir/sub",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --exclude *.users",
+    "stdout": "table \"atlas_schema_revisions\" {\n  schema = schema.main\n  column \"version\" {\n    null = false\n    type = text\n  }\n  column \"description\" {\n    null = false\n    type = text\n  }\n  column \"type\" {\n    null    = false\n    type    = integer\n    default = 2\n  }\n  column \"applied\" {\n    null    = false\n    type    = integer\n    default = 0\n  }\n  column \"total\" {\n    null    = false\n    type    = integer\n    default = 0\n  }\n  column \"executed_at\" {\n    null = false\n    type = datetime\n  }\n  column \"execution_time\" {\n    null = false\n    type = integer\n  }\n  column \"error\" {\n    null = true\n    type = text\n  }\n  column \"error_stmt\" {\n    null = true\n    type = text\n  }\n  column \"hash\" {\n    null = false\n    type = text\n  }\n  column \"partial_hashes\" {\n    null = true\n    type = json\n  }\n  column \"operator_version\" {\n    null = false\n    type = text\n  }\n  primary_key {\n    columns = [column.version]\n  }\n}\ntable \"users\" {\n  schema = schema.main\n  column \"id\" {\n    null = true\n    type = integer\n  }\n  column \"name\" {\n    null = true\n    type = text\n  }\n  primary_key {\n    columns = [column.id]\n  }\n}\nschema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db -s other",
+    "stdout": "table \"atlas_schema_revisions\" {\n  schema = schema.main\n  column \"version\" {\n    null = false\n    type = text\n  }\n  column \"description\" {\n    null = false\n    type = text\n  }\n  column \"type\" {\n    null    = false\n    type    = integer\n    default = 2\n  }\n  column \"applied\" {\n    null    = false\n    type    = integer\n    default = 0\n  }\n  column \"total\" {\n    null    = false\n    type    = integer\n    default = 0\n  }\n  column \"executed_at\" {\n    null = false\n    type = datetime\n  }\n  column \"execution_time\" {\n    null = false\n    type = integer\n  }\n  column \"error\" {\n    null = true\n    type = text\n  }\n  column \"error_stmt\" {\n    null = true\n    type = text\n  }\n  column \"hash\" {\n    null = false\n    type = text\n  }\n  column \"partial_hashes\" {\n    null = true\n    type = json\n  }\n  column \"operator_version\" {\n    null = false\n    type = text\n  }\n  primary_key {\n    columns = [column.version]\n  }\n}\ntable \"users\" {\n  schema = schema.main\n  column \"id\" {\n    null = true\n    type = integer\n  }\n  column \"name\" {\n    null = true\n    type = text\n  }\n  primary_key {\n    columns = [column.id]\n  }\n}\nschema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u file://schema.hcl",
+    "stdout": "",
+    "stderr": "Error: --dev-url cannot be empty\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u file://schema.sql",
+    "stdout": "",
+    "stderr": "Error: --dev-url cannot be empty. See: https://atlasgo.io/atlas-schema/sql#dev-database\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u file://schema.hcl --format {{ json . }}",
+    "stdout": "",
+    "stderr": "Error: --dev-url cannot be empty\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://newdb.db --to file://schema.hcl --dev-url sqlite://dev?mode=memory --dry-run --exclude *.posts",
+    "stdout": "-- Planned Changes:\n-- Create \"users\" table\nCREATE TABLE `users` (\n  `id` int NOT NULL,\n  `name` varchar NULL,\n  PRIMARY KEY (`id`)\n);\n-- Create \"posts\" table\nCREATE TABLE `posts` (\n  `id` int NOT NULL,\n  `user_id` int NOT NULL,\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n);\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://mig1/s.db --lock-timeout notaduration",
+    "stdout": "",
+    "stderr": "Error: invalid argument \"notaduration\" for \"--lock-timeout\" flag: time: invalid duration \"notaduration\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://mig1/s.db --lock-timeout -5s",
+    "stdout": "Migrating to version 20260922014845 from 1 (1 migrations in total):\n\n  -- migrating version 20260922014845\n  -- ok (4.007ms)\n\n  -------------------------\n  -- 4.9185ms\n  -- 1 migration\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://mig1/s.db abc",
+    "stdout": "",
+    "stderr": "Error: invalid amount argument \"abc\" (invalid syntax). Omit the argument or pass a valid integer instead\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://mig1/s.db -1",
+    "stdout": "",
+    "stderr": "Error: unknown shorthand flag: '1' in -1\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://prompt.db --to file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "-- Planned Changes:\n-- Create \"users\" table\nCREATE TABLE `users` (\n  `id` int NOT NULL,\n  `name` varchar NULL,\n  PRIMARY KEY (`id`)\n);\n-- Create \"posts\" table\nCREATE TABLE `posts` (\n  `id` int NOT NULL,\n  `user_id` int NOT NULL,\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n);\n\u001b[?25l\u001b[2K\n\u001b[34m?\u001b[0m Are you sure?: \n\u001b[2K\n  \u001b[1m\u25b8\u001b[0m \u001b[4mApply\u001b[0m\n\u001b[2K\n    Abort\n\u001b[1A\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[2K\n\u001b[?25h",
+    "stderr": "Error: ^D\n",
+    "exit_code": 1,
+    "note": "stdin EOF"
+  },
+  {
+    "command": "atlas schema apply -u sqlite://prompt2.db --to file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "-- Planned Changes:\n-- Create \"users\" table\nCREATE TABLE `users` (\n  `id` int NOT NULL,\n  `name` varchar NULL,\n  PRIMARY KEY (`id`)\n);\n-- Create \"posts\" table\nCREATE TABLE `posts` (\n  `id` int NOT NULL,\n  `user_id` int NOT NULL,\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n);\n\u001b[?25l\u001b[2K\n\u001b[34m?\u001b[0m Are you sure?: \n\u001b[2K\n  \u001b[1m\u25b8\u001b[0m \u001b[4mApply\u001b[0m\n\u001b[2K\n    Abort\n\u001b[1A\u001b[1A\u001b[1A\u001b[2K\n\u001b[34m?\u001b[0m Are you sure?: \u001b[1B\u001b[2K\n  \u001b[1m\u25b8\u001b[0m \u001b[4mApply\u001b[0m\u001b[1B\u001b[2K\n    Abort\u001b[1B\u001b[1A\u001b[1A\u001b[1A\u001b[2K\n\u001b[34m?\u001b[0m Are you sure?: \u001b[1B\u001b[2K\n  \u001b[1m\u25b8\u001b[0m \u001b[4mApply\u001b[0m\u001b[1B\u001b[2K\n    Abort\u001b[1B\u001b[1A\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[2K\n\u001b[32m\u001b[32m\u2714\u001b[0m \u001b[2mApply\u001b[0m\n\u001b[?25h",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "stdin 'a'"
+  },
+  {
+    "command": "atlas migrate diff create_users --dir file://mdiff --to file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate diff create_users --dir file://mdiff2 --to file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "re-run: no changes"
+  },
+  {
+    "command": "atlas migrate diff x --dir file://mdiff --to file://schema.hcl --dev-url sqlite://dev?mode=memory --dir-format bogus",
+    "stdout": "",
+    "stderr": "Error: unknown dir format \"bogus\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate lint --dir file://mig1 --dev-url sqlite://dev?mode=memory --git-base main",
+    "stdout": "",
+    "stderr": "Error: git diff: exit status 129\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate import --from file://mig1 --to file://imp1",
+    "stdout": "",
+    "stderr": "Error: cannot import a migration directory already in \"atlas\" format\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate hash --dir file://nodir",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate validate --dir file://nodir",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate new --dir file://nodir",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate import --from file://imp_src?format=golang-migrate --to file://imp_out",
+    "stdout": "nothing to import",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate import --from file://imp_src?format=liquibase --to file://imp_out2",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate import --from file://imp_src?format=flyway --to file://imp_out3",
+    "stdout": "nothing to import",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate import --from file://imp_src?format=bogus --to file://imp_out4",
+    "stdout": "",
+    "stderr": "Error: unknown dir format \"bogus\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate import --from file://nodir2 --to file://imp_out5",
+    "stdout": "",
+    "stderr": "Error: sql/migrate: stat nodir2: no such file or directory\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect --config file://cfg/required_var.hcl --env e",
+    "stdout": "",
+    "stderr": "Error: missing value for required variable \"must\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect --config file://cfg/required_var.hcl --env e --var must=a.db",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect --config file://cfg/badfunc.hcl --env e",
+    "stdout": "",
+    "stderr": "Error: invalid character \"{\" in host name\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema fmt -",
+    "stdout": "",
+    "stderr": "Error: stat -: no such file or directory\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ json .Tables }}",
+    "stdout": "",
+    "stderr": "Error: template: format:1:8: executing \"format\" at <.Tables>: can't evaluate field Tables in type *cmdlog.SchemaInspect\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ printf \"%+v\" . }}",
+    "stdout": "&{ctx:0xc000113900 client:0xc0006f1900 URL:sqlite://mig1/s.db Realm:0xc0006fe000}",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ json .Schemas }}",
+    "stdout": "",
+    "stderr": "Error: template: format:1:8: executing \"format\" at <.Schemas>: can't evaluate field Schemas in type *cmdlog.SchemaInspect\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ hcl . }}",
+    "stdout": "",
+    "stderr": "Error: template: format:1:3: executing \"format\" at <hcl .>: error calling hcl: \n'atlas schema inspect' with 'hcl' function is not supported by the community version of Atlas.\n\nInstall the non-community version instead:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nFor more installtion options, see: https://atlasgo.io/docs#installation\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ sql . }}",
+    "stdout": "-- Create \"atlas_schema_revisions\" table\nCREATE TABLE `atlas_schema_revisions` (`version` text NOT NULL, `description` text NOT NULL, `type` integer NOT NULL DEFAULT 2, `applied` integer NOT NULL DEFAULT 0, `total` integer NOT NULL DEFAULT 0, `executed_at` datetime NOT NULL, `execution_time` integer NOT NULL, `error` text NULL, `error_stmt` text NULL, `hash` text NOT NULL, `partial_hashes` json NULL, `operator_version` text NOT NULL, PRIMARY KEY (`version`));\n-- Create \"users\" table\nCREATE TABLE `users` (`id` integer NULL, `name` text NULL, PRIMARY KEY (`id`));\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ sql . \"  \" }}",
+    "stdout": "-- Create \"atlas_schema_revisions\" table\nCREATE TABLE `atlas_schema_revisions` (\n  `version` text NOT NULL,\n  `description` text NOT NULL,\n  `type` integer NOT NULL DEFAULT 2,\n  `applied` integer NOT NULL DEFAULT 0,\n  `total` integer NOT NULL DEFAULT 0,\n  `executed_at` datetime NOT NULL,\n  `execution_time` integer NOT NULL,\n  `error` text NULL,\n  `error_stmt` text NULL,\n  `hash` text NOT NULL,\n  `partial_hashes` json NULL,\n  `operator_version` text NOT NULL,\n  PRIMARY KEY (`version`)\n);\n-- Create \"users\" table\nCREATE TABLE `users` (\n  `id` integer NULL,\n  `name` text NULL,\n  PRIMARY KEY (`id`)\n);\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ upper . }}",
+    "stdout": "",
+    "stderr": "Error: parse log format: template: format:1: function \"upper\" not defined\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema diff --from file://schema.sql --to file://schema.hcl --dev-url sqlite://dev?mode=memory --format {{ json . }}",
+    "stdout": "",
+    "stderr": "Error: parse log format: template: format:1: function \"json\" not defined\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema diff --from file://schema.sql --to file://schema.hcl --dev-url sqlite://dev?mode=memory --format {{ sql . \"  \" }}",
+    "stdout": "-- Create \"posts\" table\nCREATE TABLE `posts` (\n  `id` int NOT NULL,\n  `user_id` int NOT NULL,\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n);\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate status -u sqlite://mig1/s.db --dir file://mig1 --format {{ json . }}",
+    "stdout": "{\"Env\":{\"Driver\":\"sqlite\",\"URL\":{\"Scheme\":\"sqlite\",\"Opaque\":\"\",\"User\":null,\"Host\":\"mig1\",\"Path\":\"/s.db\",\"RawPath\":\"\",\"OmitHost\":false,\"ForceQuery\":false,\"RawQuery\":\"\",\"Fragment\":\"\",\"RawFragment\":\"\",\"Schema\":\"main\"},\"Dir\":\"file://mig1?format=atlas\"},\"Available\":[{\"Name\":\"1_init.sql\",\"Version\":\"1\",\"Description\":\"init\"}],\"Applied\":[{\"Version\":\"1\",\"Description\":\"init\",\"Type\":\"applied\",\"Applied\":1,\"Total\":1,\"ExecutedAt\":\"2026-09-22T01:49:10.479712993Z\",\"ExecutionTime\":151200,\"OperatorVersion\":\"Atlas CLI - development\"},{\"Version\":\"20260922014845\",\"Description\":\"\",\"Type\":\"applied\",\"Applied\":0,\"Total\":0,\"ExecutedAt\":\"2026-09-22T01:50:16.125836151Z\",\"ExecutionTime\":342800,\"OperatorVersion\":\"Atlas CLI - development\"}],\"Current\":\"20260922014845\",\"Next\":\"Already at latest version\",\"Status\":\"OK\"}",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://mig1/s.db --dir file://mig1 --format {{ json . }} --dry-run",
+    "stdout": "{\"Driver\":\"sqlite\",\"URL\":{\"Scheme\":\"sqlite\",\"Opaque\":\"\",\"User\":null,\"Host\":\"mig1\",\"Path\":\"/s.db\",\"RawPath\":\"\",\"OmitHost\":false,\"ForceQuery\":false,\"RawQuery\":\"\",\"Fragment\":\"\",\"RawFragment\":\"\",\"Schema\":\"main\"},\"Dir\":\"file://mig1\",\"Current\":\"20260922014845\",\"Start\":\"2026-09-22T01:51:02.441586817Z\",\"End\":\"2026-09-22T01:51:02.442077517Z\",\"Message\":\"No migration files to execute\"}",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate new edittest --dir file://migedit --edit",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate new edittest2 --dir file://migedit --edit",
+    "stdout": "",
+    "stderr": "sh: 1: nosucheditor123: not found\nError: exec edit: exit status 127\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://edit.db --to file://schema.hcl --dev-url sqlite://dev?mode=memory --edit",
+    "stdout": "",
+    "stderr": "Abort: 'atlas schema apply --edit' is not supported by the community version.\n\nTo install the non-community version of Atlas, use the following command:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nOr, visit the website to see all installation options:\n\n\thttps://atlasgo.io/docs#installation\n\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://plan.db --to file://schema.hcl --dev-url sqlite://dev?mode=memory --dry-run --plan atlas://repo/plans/name",
+    "stdout": "",
+    "stderr": "Abort: 'atlas schema apply --plan' is not supported by the community version.\n\nTo install the non-community version of Atlas, use the following command:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nOr, visit the website to see all installation options:\n\n\thttps://atlasgo.io/docs#installation\n\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://plan.db --to file://schema.hcl --dev-url sqlite://dev?mode=memory --dry-run --plan file://nope.json",
+    "stdout": "",
+    "stderr": "Abort: 'atlas schema apply --plan' is not supported by the community version.\n\nTo install the non-community version of Atlas, use the following command:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nOr, visit the website to see all installation options:\n\n\thttps://atlasgo.io/docs#installation\n\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://plan.db --to file://schema.hcl --dev-url sqlite://dev?mode=memory --dry-run --plan /tmp/w/plan.json",
+    "stdout": "",
+    "stderr": "Abort: 'atlas schema apply --plan' is not supported by the community version.\n\nTo install the non-community version of Atlas, use the following command:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nOr, visit the website to see all installation options:\n\n\thttps://atlasgo.io/docs#installation\n\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect --config file://cfg --env dev",
+    "stdout": "",
+    "stderr": "Error: <nil>: Failed to read file; The configuration file \"cfg\" could not be read.\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect --config http://example.com/atlas.hcl --env dev",
+    "stdout": "",
+    "stderr": "Error: unsupported config file driver \"http\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --include *.users",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --include\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate diff q --dir file://mq --to file://schema.hcl --dev-url sqlite://dev?mode=memory --qualifier foo",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate diff ed --dir file://mdiff3 --to file://schema.hcl --dev-url sqlite://dev?mode=memory --edit",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema diff --from file://mig1 --to file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "",
+    "stderr": "Error: ambiguous schema: both SQL and HCL files found: \"1_init.sql\", \"valid_config.hcl\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://ver.db --to file://mig1?version=1 --dev-url sqlite://dev?mode=memory --dry-run",
+    "stdout": "",
+    "stderr": "Error: ambiguous schema: both SQL and HCL files found: \"1_init.sql\", \"valid_config.hcl\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://ver.db --to file://mig1?version=999 --dev-url sqlite://dev?mode=memory --dry-run",
+    "stdout": "",
+    "stderr": "Error: ambiguous schema: both SQL and HCL files found: \"1_init.sql\", \"valid_config.hcl\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema diff --from sqlite://mig1/s.db --to file://schema.hcl --dev-url bogus://x",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: unknown driver \"bogus\". See: https://atlasgo.io/url\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema diff --from sqlite://mig1/s.db --to file://schema.hcl --dev-url docker://mysql/8/dev",
+    "stdout": "",
+    "stderr": "Error: exec: \"docker\": executable file not found in $PATH\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://mig1/s.db --dir file://mig1 --baseline 1",
+    "stdout": "No migration files to execute\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://mig1/s.db --dir file://mig1 --allow-dirty",
+    "stdout": "No migration files to execute\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://mig1/s.db --dir file://mig1 --revisions-schema rev1",
+    "stdout": "",
+    "stderr": "Error: cannot store revisions-table in a separate schema (\"rev1\") with SQLite driver\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate status -u sqlite://mig1/s.db --dir file://mig1 --revisions-schema rev1",
+    "stdout": "Migration Status: PENDING\n  -- Current Version: No migration applied yet\n  -- Next Version:    1\n  -- Executed Files:  0\n  -- Pending Files:   1\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate new fmt1 --dir file://mfmt --dir-format golang-migrate",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate new fmt2 --dir file://mfmt --dir-format liquibase",
+    "stdout": "You have a checksum error in your migration directory.\n\n\tL2: 20260922015208_fmt1.down.sql was added\n\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum mismatch\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate new fmt3 --dir file://mfmt --dir-format flyway",
+    "stdout": "You have a checksum error in your migration directory.\n\n\tL2: 20260922015208_fmt1.up.sql was removed\n\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum mismatch\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate new fmt4 --dir file://mfmt --dir-format goose",
+    "stdout": "You have a checksum error in your migration directory.\n\n\tL2: 20260922015208_fmt1.down.sql was added\n\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum mismatch\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate new nn_atlas --dir file://df_atlas --dir-format atlas",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "fresh dir"
+  },
+  {
+    "command": "atlas migrate new nn_golang_migrate --dir file://df_golang_migrate --dir-format golang-migrate",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "fresh dir"
+  },
+  {
+    "command": "atlas migrate new nn_liquibase --dir file://df_liquibase --dir-format liquibase",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "fresh dir"
+  },
+  {
+    "command": "atlas migrate new nn_flyway --dir file://df_flyway --dir-format flyway",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "fresh dir"
+  },
+  {
+    "command": "atlas migrate new nn_goose --dir file://df_goose --dir-format goose",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "fresh dir"
+  },
+  {
+    "command": "atlas schema apply -u sqlite://ver2.db --to file://mig1/*.sql?version=1 --dev-url sqlite://dev?mode=memory --dry-run",
+    "stdout": "",
+    "stderr": "Error: stat mig1/*.sql: no such file or directory\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://ver2.db --to file://sqlonly?version=1 --dev-url sqlite://dev?mode=memory --dry-run",
+    "stdout": "",
+    "stderr": "Error: sql/migrate: read migration directory state: sql/migrate: migration with version \"1\" not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema diff --from file://sqlonly?version=1 --to file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "",
+    "stderr": "Error: sql/migrate: read migration directory state: sql/migrate: migration with version \"1\" not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://ver3.db --to file://versql?version=20220101000000 --dev-url sqlite://dev?mode=memory --dry-run",
+    "stdout": "",
+    "stderr": "Error: sql/migrate: read migration directory state: sql/migrate: validate migration directory: checksum file not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://ver3.db --to file://versql?version=20220101000000 --dev-url sqlite://dev?mode=memory --auto-approve",
+    "stdout": "",
+    "stderr": "Error: sql/migrate: read migration directory state: sql/migrate: validate migration directory: checksum file not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate validate --dir file://versql --dev-url sqlite://dev?mode=memory",
+    "stdout": "You have a checksum error in your migration directory.\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum file not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate validate --dir file://mig1",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate validate --dir file://vbroken",
+    "stdout": "You have a checksum error in your migration directory.\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum file not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://vbroken.db --dir file://vbroken",
+    "stdout": "You have a checksum error in your migration directory.\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum file not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://nochange.db --dir file://versql --auto-approve",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --auto-approve\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://mig1/s.db --to file://schema.hcl --dev-url sqlite://dev?mode=memory --auto-approve --format {{ json . }}",
+    "stdout": "{\"Driver\":\"sqlite\",\"URL\":{\"Scheme\":\"sqlite\",\"Opaque\":\"\",\"User\":null,\"Host\":\"mig1\",\"Path\":\"/s.db\",\"RawPath\":\"\",\"OmitHost\":false,\"ForceQuery\":false,\"RawQuery\":\"\",\"Fragment\":\"\",\"RawFragment\":\"\",\"Schema\":\"main\"},\"Changes\":{\"Applied\":[\"PRAGMA foreign_keys = off\",\"DROP TABLE `atlas_schema_revisions`\",\"CREATE TABLE `new_users` (\\n  `id` int NOT NULL,\\n  `name` varchar NULL,\\n  PRIMARY KEY (`id`)\\n)\",\"INSERT INTO `new_users` (`id`, `name`) SELECT `id`, `name` FROM `users`\",\"DROP TABLE `users`\",\"ALTER TABLE `new_users` RENAME TO `users`\",\"CREATE TABLE `posts` (\\n  `id` int NOT NULL,\\n  `user_id` int NOT NULL,\\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\\n)\",\"PRAGMA foreign_keys = on\"]}}",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema clean -u sqlite://ver3.db --auto-approve --format {{ json . }}",
+    "stdout": "",
+    "stderr": "Abort: 'atlas schema clean --format' is not supported by the community version.\n\nTo install the non-community version of Atlas, use the following command:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nOr, visit the website to see all installation options:\n\n\thttps://atlasgo.io/docs#installation\n\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate lint --dir file://versql --dev-url sqlite://dev?mode=memory --latest 2 --format {{ json . }}",
+    "stdout": "{\"Env\":{\"Driver\":\"sqlite\",\"URL\":{\"Scheme\":\"sqlite\",\"Opaque\":\"\",\"User\":null,\"Host\":\"dev\",\"Path\":\"\",\"RawPath\":\"\",\"OmitHost\":false,\"ForceQuery\":false,\"RawQuery\":\"mode=memory\",\"Fragment\":\"\",\"RawFragment\":\"\",\"Schema\":\"main\"},\"Dir\":\"versql\"},\"Schema\":{\"Current\":\"schema \\\"main\\\" {\\n}\\n\",\"Desired\":\"table \\\"a1\\\" {\\n  schema = schema.main\\n  column \\\"id\\\" {\\n    null = true\\n    type = int\\n  }\\n}\\ntable \\\"a2\\\" {\\n  schema = schema.main\\n  column \\\"id\\\" {\\n    null = true\\n    type = int\\n  }\\n}\\nschema \\\"main\\\" {\\n}\\n\"},\"Steps\":[{\"Name\":\"Detect New Migration Files\",\"Text\":\"Found 2 new migration files (from 2 total)\"},{\"Name\":\"Replay Migration Files\",\"Text\":\"Loaded 2 changes on dev database\"},{\"Name\":\"Analyze 20220101000000_first.sql\",\"Text\":\"0 reports were found in analysis\",\"Result\":{\"Name\":\"20220101000000_first.sql\",\"Text\":\"-- +atlas stmts\\nCREATE TABLE a1 (id INT);\\n\"}},{\"Name\":\"Analyze 20220102000000_second.sql\",\"Text\":\"0 reports were found in analysis\",\"Result\":{\"Name\":\"20220102000000_second.sql\",\"Text\":\"CREATE TABLE a2 (id INT);\\n\"}}],\"Files\":[{\"Name\":\"20220101000000_first.sql\",\"Text\":\"-- +atlas stmts\\nCREATE TABLE a1 (id INT);\\n\"},{\"Name\":\"20220102000000_second.sql\",\"Text\":\"CREATE TABLE a2 (id INT);\\n\"}]}",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate new sub/dir/name --dir file://mnamed",
+    "stdout": "",
+    "stderr": "Error: open mnamed/20260922015257_sub/dir/name.sql: no such file or directory\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db -w",
+    "stdout": "",
+    "stderr": "Error: unknown shorthand flag: 'w' in -w\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "table \"users\" {\n  schema = schema.main\n  column \"id\" {\n    null = false\n    type = int\n  }\n  column \"name\" {\n    null = true\n    type = varchar(255)\n  }\n  primary_key {\n    columns = [column.id]\n  }\n}\ntable \"posts\" {\n  schema = schema.main\n  column \"id\" {\n    null = false\n    type = int\n  }\n  column \"user_id\" {\n    null = false\n    type = int\n  }\n  foreign_key \"user_fk\" {\n    columns     = [column.user_id]\n    ref_columns = [table.users.column.id]\n    on_delete   = CASCADE\n  }\n}\nschema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://ord.db --dir file://versql --exec-order non-linear",
+    "stdout": "Migrating to version 20220102000000 (2 migrations in total):\n\n  -- migrating version 20220101000000\n    -> CREATE TABLE a1 (id INT);\n  -- ok (4.3491ms)\n\n  -- migrating version 20220102000000\n    -> CREATE TABLE a2 (id INT);\n  -- ok (3.8841ms)\n\n  -------------------------\n  -- 10.478ms\n  -- 2 migrations\n  -- 2 sql statements\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://ord2.db --dir file://versql --exec-order linear-skip",
+    "stdout": "Migrating to version 20220102000000 (2 migrations in total):\n\n  -- migrating version 20220101000000\n    -> CREATE TABLE a1 (id INT);\n  -- ok (4.3051ms)\n\n  -- migrating version 20220102000000\n    -> CREATE TABLE a2 (id INT);\n  -- ok (5.4275ms)\n\n  -------------------------\n  -- 11.1526ms\n  -- 2 migrations\n  -- 2 sql statements\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://ord3.db --dir file://versql --tx-mode none",
+    "stdout": "Migrating to version 20220102000000 (2 migrations in total):\n\n  -- migrating version 20220101000000\n    -> CREATE TABLE a1 (id INT);\n  -- ok (14.7648ms)\n\n  -- migrating version 20220102000000\n    -> CREATE TABLE a2 (id INT);\n  -- ok (11.0883ms)\n\n  -------------------------\n  -- 30.8124ms\n  -- 2 migrations\n  -- 2 sql statements\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://ord4.db --dir file://versql --tx-mode all",
+    "stdout": "Migrating to version 20220102000000 (2 migrations in total):\n\n  -- migrating version 20220101000000\n    -> CREATE TABLE a1 (id INT);\n  -- ok (584.2\u00b5s)\n\n  -- migrating version 20220102000000\n    -> CREATE TABLE a2 (id INT);\n  -- ok (3.8274ms)\n\n  -------------------------\n  -- 6.1154ms\n  -- 2 migrations\n  -- 2 sql statements\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas --env dev schema inspect",
+    "stdout": "",
+    "stderr": "Error: config file \"atlas.hcl\" was not found: stat atlas.hcl: no such file or directory\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect --env dev",
+    "stdout": "",
+    "stderr": "Error: config file \"atlas.hcl\" was not found: stat atlas.hcl: no such file or directory\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema fmt schema.hcl schema.sql bad.hcl",
+    "stdout": "schema.hcl\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema apply -u sqlite://nodev.db --to file://schema.hcl",
+    "stdout": "-- Planned Changes:\n-- Create \"users\" table\nCREATE TABLE `users` (\n  `id` int NOT NULL,\n  `name` varchar NULL,\n  PRIMARY KEY (`id`)\n);\n-- Create \"posts\" table\nCREATE TABLE `posts` (\n  `id` int NOT NULL,\n  `user_id` int NOT NULL,\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n);\n\u001b[?25l\u001b[2K\n\u001b[34m?\u001b[0m Are you sure?: \n\u001b[2K\n  \u001b[1m\u25b8\u001b[0m \u001b[4mApply\u001b[0m\n\u001b[2K\n    Abort\n\u001b[1A\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[2K\n\u001b[?25h",
+    "stderr": "Error: ^D\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ json . }}",
+    "stdout": "{\"schemas\":[{\"name\":\"main\",\"tables\":[{\"name\":\"users\",\"columns\":[{\"name\":\"id\",\"type\":\"INT\"},{\"name\":\"name\",\"type\":\"varchar\",\"null\":true}],\"primary_key\":{\"parts\":[{\"column\":\"id\"}]}},{\"name\":\"posts\",\"columns\":[{\"name\":\"id\",\"type\":\"INT\"},{\"name\":\"user_id\",\"type\":\"INT\"}],\"foreign_keys\":[{\"name\":\"user_fk\",\"columns\":[\"user_id\"],\"references\":{\"table\":\"users\",\"columns\":[\"id\"]}}]}]}]}",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "NO_COLOR"
+  },
+  {
+    "command": "atlas migrate status --env prod",
+    "stdout": "",
+    "stderr": "Error: sql/migrate: stat versql: no such file or directory\n",
+    "exit_code": 1,
+    "note": "PROD_DB_URL unset"
+  },
+  {
+    "command": "atlas migrate status --env prod",
+    "stdout": "",
+    "stderr": "Error: sql/migrate: stat versql: no such file or directory\n",
+    "exit_code": 1,
+    "note": "PROD_DB_URL set"
+  },
+  {
+    "command": "atlas migrate apply --env prod",
+    "stdout": "",
+    "stderr": "Error: sql/migrate: stat versql: no such file or directory\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect --env multi",
+    "stdout": "",
+    "stderr": "Error: invalid character \"{\" in host name\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect --env multi --var tenant=t2",
+    "stdout": "",
+    "stderr": "Error: invalid character \"{\" in host name\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://zz.db",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "auto-load atlas.hcl present"
+  },
+  {
+    "command": "atlas migrate status --env prod",
+    "stdout": "Migration Status: PENDING\n  -- Current Version: No migration applied yet\n  -- Next Version:    20220101000000\n  -- Executed Files:  0\n  -- Pending Files:   2\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "migration.dir from env"
+  },
+  {
+    "command": "atlas schema inspect --env multi",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "var default"
+  },
+  {
+    "command": "atlas schema inspect --env multi --var tenant=t2",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "var override"
+  },
+  {
+    "command": "atlas schema inspect --env prod",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"url\" not set\n",
+    "exit_code": 1,
+    "note": "missing getenv url"
+  },
+  {
+    "command": "atlas migrate apply --env prod",
+    "stdout": "{\"Driver\":\"sqlite\",\"URL\":{\"Scheme\":\"sqlite\",\"Opaque\":\"\",\"User\":null,\"Host\":\"prod_apply2.db\",\"Path\":\"\",\"RawPath\":\"\",\"OmitHost\":false,\"ForceQuery\":false,\"RawQuery\":\"\",\"Fragment\":\"\",\"RawFragment\":\"\",\"Schema\":\"main\"},\"Dir\":\"file://versql\",\"Pending\":[{\"Name\":\"20220101000000_first.sql\",\"Version\":\"20220101000000\",\"Description\":\"first\"},{\"Name\":\"20220102000000_second.sql\",\"Version\":\"20220102000000\",\"Description\":\"second\"}],\"Applied\":[{\"Name\":\"20220101000000_first.sql\",\"Version\":\"20220101000000\",\"Description\":\"first\",\"Start\":\"2026-09-22T01:54:24.177587337Z\",\"End\":\"2026-09-22T01:54:24.182396937Z\",\"Applied\":[\"CREATE TABLE a1 (id INT);\"]},{\"Name\":\"20220102000000_second.sql\",\"Version\":\"20220102000000\",\"Description\":\"second\",\"Start\":\"2026-09-22T01:54:24.182397037Z\",\"End\":\"2026-09-22T01:54:24.185905837Z\",\"Applied\":[\"CREATE TABLE a2 (id INT);\"]}],\"Target\":\"20220102000000\",\"Start\":\"2026-09-22T01:54:24.175187637Z\",\"End\":\"2026-09-22T01:54:24.185905837Z\",\"Message\":\"Migrated to version 20220102000000 from  (2 migrations in total)\"}",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "format from config?"
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://dry.db --dir file://versql --dry-run",
+    "stdout": "Migrating to version 20220102000000 (2 migrations in total):\n\n  -- migrating version 20220101000000\n    -> CREATE TABLE a1 (id INT);\n  -- ok (184.2\u00b5s)\n\n  -- migrating version 20220102000000\n    -> CREATE TABLE a2 (id INT);\n  -- ok (1.2\u00b5s)\n\n  -------------------------\n  -- 1.3184ms\n  -- 2 migrations\n  -- 2 sql statements\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema apply -u sqlite://same.db --to file://schema.hcl --to file://schema.hcl --dev-url sqlite://dev?mode=memory --dry-run",
+    "stdout": "-- Planned Changes:\n-- Create \"users\" table\nCREATE TABLE `users` (\n  `id` int NOT NULL,\n  `name` varchar NULL,\n  PRIMARY KEY (`id`)\n);\n-- Create \"posts\" table\nCREATE TABLE `posts` (\n  `id` int NOT NULL,\n  `user_id` int NOT NULL,\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n);\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://:memory:",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://file:x?mode=memory&cache=shared",
+    "stdout": "",
+    "stderr": "Error: invalid port \":x\" after host\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://nohost.db --to file://schema.hcl",
+    "stdout": "-- Planned Changes:\n-- Create \"users\" table\nCREATE TABLE `users` (\n  `id` int NOT NULL,\n  `name` varchar NULL,\n  PRIMARY KEY (`id`)\n);\n-- Create \"posts\" table\nCREATE TABLE `posts` (\n  `id` int NOT NULL,\n  `user_id` int NOT NULL,\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n);\n\u001b[?25l\u001b[2K\n\u001b[34m?\u001b[0m Are you sure?: \n\u001b[2K\n  \u001b[1m\u25b8\u001b[0m \u001b[4mApply\u001b[0m\n\u001b[2K\n    Abort\n\u001b[1A\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[1A\u001b[2K\n\u001b[2K\n\u001b[?25h",
+    "stderr": "Error: ^D\n",
+    "exit_code": 1,
+    "note": "no dev-url, sqlite"
+  },
+  {
+    "command": "atlas migrate status -u sqlite://prod_apply2.db --dir file://versql",
+    "stdout": "Migration Status: OK\n  -- Current Version: 20220102000000\n  -- Next Version:    Already at latest version\n  -- Executed Files:  2\n  -- Pending Files:   0\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://prod_apply2.db --dir file://versql",
+    "stdout": "No migration files to execute\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "second run"
+  },
+  {
+    "command": "atlas migrate import --from file://gm_src?format=golang-migrate --to file://imp_dst",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate import --from file://gm_src?format=golang-migrate --to file://imp_dst",
+    "stdout": "",
+    "stderr": "Error: target migration directory must be empty\n",
+    "exit_code": 1,
+    "note": "second run, dst non-empty"
+  },
+  {
+    "command": "atlas migrate hash --dir file://df_flyway --dir-format flyway",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate hash --dir file://nodir3",
+    "stdout": "",
+    "stderr": "Error: sql/migrate: stat nodir3: no such file or directory\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema fmt schema.sql",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema fmt cfg",
+    "stdout": "cfg/config_with_getenv.hcl\ncfg/config_with_locals.hcl\ncfg/config_with_vars.hcl\ncfg/malformed_config.hcl\ncfg/unformatted.hcl\ncfg/valid_config.hcl\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema fmt /tmp/w/schema.hcl /tmp/w/fmt",
+    "stdout": "/tmp/w/fmt/config_with_getenv.hcl\n/tmp/w/fmt/config_with_locals.hcl\n/tmp/w/fmt/config_with_vars.hcl\n/tmp/w/fmt/valid_config.hcl\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u file://nodir",
+    "stdout": "",
+    "stderr": "Error: --dev-url cannot be empty. See: https://atlasgo.io/atlas-schema/sql#dev-database\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u file:///tmp/w/schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "table \"users\" {\n  schema = schema.main\n  column \"id\" {\n    null = false\n    type = int\n  }\n  column \"name\" {\n    null = true\n    type = varchar(255)\n  }\n  primary_key {\n    columns = [column.id]\n  }\n}\ntable \"posts\" {\n  schema = schema.main\n  column \"id\" {\n    null = false\n    type = int\n  }\n  column \"user_id\" {\n    null = false\n    type = int\n  }\n  foreign_key \"user_fk\" {\n    columns     = [column.user_id]\n    ref_columns = [table.users.column.id]\n    on_delete   = CASCADE\n  }\n}\nschema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u MYSQL://localhost",
+    "stdout": "",
+    "stderr": "Error: mysql: query system variables: dial tcp [::1]:3306: connect: connection refused\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect --url=",
+    "stdout": "",
+    "stderr": "Error: missing scheme. See: https://atlasgo.io/url\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema diff --from sqlite://mig1/s.db --to file://schema.hcl --dev-url sqlite://dev?mode=memory -s main",
+    "stdout": "Schemas are synced, no changes to be made.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate lint --dir file://versql --dev-url sqlite://dev?mode=memory --latest 0",
+    "stdout": "",
+    "stderr": "Error: --latest or --git-base is required\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate lint --dir file://vbroken --dev-url sqlite://dev?mode=memory --latest 1",
+    "stdout": "Analyzing changes from version 20220101000000 to 20220102000000 (1 migration in total):\n\n  -- analyzing version 20220102000000\n    -- no diagnostics found\n  -- ok (4.3\u00b5s)\n\n  -------------------------\n  -- 2.851901ms\n  -- 1 version ok\n  -- 1 schema change\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect --config file://atlas.hcl --env multi",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "Notice: This Atlas edition lacks support for features such as checkpoints,\ntesting, down migrations, and more. Additionally, advanced database objects such as views, \ntriggers, and stored procedures are not supported. To read more: https://atlasgo.io/community-edition\n\nTo install the non-community version of Atlas, use the following command:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nOr, visit the website to see all installation options:\n\n\thttps://atlasgo.io/docs#installation\n\n",
+    "exit_code": 0,
+    "note": "fresh HOME, notice on stderr"
+  },
+  {
+    "command": "atlas badcmd",
+    "stdout": "",
+    "stderr": "Error: unknown command \"badcmd\" for \"atlas\"\nRun 'atlas --help' for usage.\nYou're running the community build of Atlas, which may differ from the official version.\nIf this error persists, try installing the official version as a troubleshooting step:\n\n  curl -sSf https://atlasgo.sh | sh\n\nMore installation options: https://atlasgo.io/docs#installation\n",
+    "exit_code": 1,
+    "note": "fresh HOME community suggestion on stderr"
+  },
+  {
+    "command": "atlas badcmd",
+    "stdout": "",
+    "stderr": "Error: unknown command \"badcmd\" for \"atlas\"\nRun 'atlas --help' for usage.\n",
+    "exit_code": 1,
+    "note": "second run, suggestion suppressed"
+  },
+  {
+    "command": "atlas migrate status --env prod --url sqlite://n6.db",
+    "stdout": "Migration Status: PENDING\n  -- Current Version: No migration applied yet\n  -- Next Version:    20220101000000\n  -- Executed Files:  0\n  -- Pending Files:   2\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "no notice expected"
+  },
+  {
+    "command": "atlas schema fmt",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "no notice expected"
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://n7.db",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "Notice: This Atlas edition lacks support for features such as checkpoints,\ntesting, down migrations, and more. Additionally, advanced database objects such as views, \ntriggers, and stored procedures are not supported. To read more: https://atlasgo.io/community-edition\n\nTo install the non-community version of Atlas, use the following command:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nOr, visit the website to see all installation options:\n\n\thttps://atlasgo.io/docs#installation\n\n",
+    "exit_code": 0,
+    "note": "no notice expected"
+  },
+  {
+    "command": "atlas migrate lint --dir file://lintd --dev-url sqlite://dev?mode=memory --latest 1",
+    "stdout": "Analyzing changes from version 20230101000000 to 20230102000000 (1 migration in total):\n\n  -- analyzing version 20230102000000\n    -- destructive changes detected:\n      -- L1: Dropping table \"big\" https://atlasgo.io/lint/analyzers#DS102\n    -- suggested fix:\n      -> Add a pre-migration check to ensure table \"big\" is empty before dropping it\n  -- ok (8\u00b5s)\n\n  -------------------------\n  -- 1.8119ms\n  -- 1 version with errors\n  -- 1 schema change\n  -- 1 diagnostic\n",
+    "stderr": "",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate lint --dir file://lintd --dev-url sqlite://dev?mode=memory --latest 1 --format {{ json . }}",
+    "stdout": "{\"Env\":{\"Driver\":\"sqlite\",\"URL\":{\"Scheme\":\"sqlite\",\"Opaque\":\"\",\"User\":null,\"Host\":\"dev\",\"Path\":\"\",\"RawPath\":\"\",\"OmitHost\":false,\"ForceQuery\":false,\"RawQuery\":\"mode=memory\",\"Fragment\":\"\",\"RawFragment\":\"\",\"Schema\":\"main\"},\"Dir\":\"lintd\"},\"Schema\":{\"Current\":\"table \\\"big\\\" {\\n  schema = schema.main\\n  column \\\"id\\\" {\\n    null = false\\n    type = int\\n  }\\n  column \\\"name\\\" {\\n    null = false\\n    type = text\\n  }\\n  primary_key {\\n    columns = [column.id]\\n  }\\n}\\nschema \\\"main\\\" {\\n}\\n\",\"Desired\":\"schema \\\"main\\\" {\\n}\\n\"},\"Steps\":[{\"Name\":\"Migration Integrity Check\",\"Text\":\"File atlas.sum is valid\"},{\"Name\":\"Detect New Migration Files\",\"Text\":\"Found 1 new migration files (from 2 total)\"},{\"Name\":\"Replay Migration Files\",\"Text\":\"Loaded 1 changes on dev database\"},{\"Name\":\"Analyze 20230102000000_drop.sql\",\"Text\":\"1 reports were found in analysis\",\"Result\":{\"Name\":\"20230102000000_drop.sql\",\"Text\":\"DROP TABLE big;\\n\",\"Reports\":[{\"Text\":\"destructive changes detected\",\"Diagnostics\":[{\"Pos\":0,\"Text\":\"Dropping table \\\"big\\\"\",\"Code\":\"DS102\",\"SuggestedFixes\":[{\"Message\":\"Add a pre-migration check to ensure table \\\"big\\\" is empty before dropping it\"}]}]}],\"Error\":\"destructive changes detected\"}}],\"Files\":[{\"Name\":\"20230102000000_drop.sql\",\"Text\":\"DROP TABLE big;\\n\",\"Reports\":[{\"Text\":\"destructive changes detected\",\"Diagnostics\":[{\"Pos\":0,\"Text\":\"Dropping table \\\"big\\\"\",\"Code\":\"DS102\",\"SuggestedFixes\":[{\"Message\":\"Add a pre-migration check to ensure table \\\"big\\\" is empty before dropping it\"}]}]}],\"Error\":\"destructive changes detected\"}]}",
+    "stderr": "",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://fail.db --dir file://faild",
+    "stdout": "You have a checksum error in your migration directory.\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum file not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate status -u sqlite://fail.db --dir file://faild",
+    "stdout": "You have a checksum error in your migration directory.\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum file not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://fail.db --dir file://faild",
+    "stdout": "You have a checksum error in your migration directory.\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum file not found\n",
+    "exit_code": 1,
+    "note": "retry after failure"
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://fresh.db --dir file://faild --baseline 20230101000000",
+    "stdout": "You have a checksum error in your migration directory.\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum file not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate set 20230102000000 -u sqlite://fail.db --dir file://faild",
+    "stdout": "You have a checksum error in your migration directory.\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum file not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://fail.db --dir file://faild",
+    "stdout": "Migrating to version 20230102000000 (2 migrations in total):\n\n  -- migrating version 20230101000000\n    -> CREATE TABLE ok1 (id INT);\n  -- ok (5.6158ms)\n\n  -- migrating version 20230102000000\n    -> CREATE TABLE ok2 (id INT);\n    -> THIS IS NOT SQL;\n    near \"THIS\": syntax error\n\n  -------------------------\n  -- 7.7431ms\n  -- 1 migration ok, 1 with errors\n  -- 2 sql statements ok, 1 with errors\n",
+    "stderr": "Error: sql/migrate: executing statement \"THIS IS NOT SQL;\" from version \"20230102000000\": near \"THIS\": syntax error\n",
+    "exit_code": 1,
+    "note": "failing SQL"
+  },
+  {
+    "command": "atlas migrate status -u sqlite://fail.db --dir file://faild",
+    "stdout": "Migration Status: PENDING\n  -- Current Version: 20230101000000\n  -- Next Version:    20230102000000\n  -- Executed Files:  1\n  -- Pending Files:   1\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "status after partial failure"
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://fail.db --dir file://faild",
+    "stdout": "Migrating to version 20230102000000 from 20230101000000 (1 migrations in total):\n\n  -- migrating version 20230102000000\n    -> CREATE TABLE ok2 (id INT);\n    -> THIS IS NOT SQL;\n    near \"THIS\": syntax error\n\n  -------------------------\n  -- 2.1446ms\n  -- 1 migration with errors\n  -- 1 sql statement ok, 1 with errors\n",
+    "stderr": "Error: sql/migrate: executing statement \"THIS IS NOT SQL;\" from version \"20230102000000\": near \"THIS\": syntax error\n",
+    "exit_code": 1,
+    "note": "retry after failure"
+  },
+  {
+    "command": "atlas migrate set 20230102000000 -u sqlite://fail.db --dir file://faild",
+    "stdout": "Current version is 20230102000000 (1 set):\n\n  + 20230102000000 (bad)\n\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate set 20230101000000 -u sqlite://fail.db --dir file://faild",
+    "stdout": "Current version is 20230101000000 (1 removed):\n\n  - 20230102000000 (bad)\n\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://fail.db --dir file://faild",
+    "stdout": "Migrating to version 20230102000000 from 20230101000000 (1 migrations in total):\n\n  -- migrating version 20230102000000\n    -> CREATE TABLE ok2 (id INT);\n    -> THIS IS NOT SQL;\n    near \"THIS\": syntax error\n\n  -------------------------\n  -- 1.273ms\n  -- 1 migration with errors\n  -- 1 sql statement ok, 1 with errors\n",
+    "stderr": "Error: sql/migrate: executing statement \"THIS IS NOT SQL;\" from version \"20230102000000\": near \"THIS\": syntax error\n",
+    "exit_code": 1,
+    "note": "after set"
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://fresh2.db --dir file://faild --baseline 20230101000000",
+    "stdout": "Migrating to version 20230102000000 from 20230101000000 (1 migrations in total):\n\n  -- migrating version 20230102000000\n    -> CREATE TABLE ok2 (id INT);\n    -> THIS IS NOT SQL;\n    near \"THIS\": syntax error\n\n  -------------------------\n  -- 5.7282ms\n  -- 1 migration with errors\n  -- 1 sql statement ok, 1 with errors\n",
+    "stderr": "Error: sql/migrate: executing statement \"THIS IS NOT SQL;\" from version \"20230102000000\": near \"THIS\": syntax error\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect --config file://atlas.hcl?env=qa",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"url\" not set\n",
+    "exit_code": 1,
+    "note": "env via query param"
+  },
+  {
+    "command": "atlas schema inspect --config file://atlas.hcl --env nope",
+    "stdout": "",
+    "stderr": "Error: env \"nope\" not defined in config file\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply --config file://atlas.hcl?env=qa --to file://schema.hcl --dry-run",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"url\" not set\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema clean --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema diff --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema fmt --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate diff --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate hash --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate import --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate lint --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate new --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate set --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate status --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate validate --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas version --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas license --zzz",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --zzz\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect --config file://atlas.hcl?env=doesnotexist",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"url\" not set\n",
+    "exit_code": 1,
+    "note": "bad env in query"
+  },
+  {
+    "command": "atlas schema inspect --config file://atlas.hcl --env qa",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "env flag works"
+  },
+  {
+    "command": "atlas schema inspect --config file://atlas.hcl?env=qa --env qa",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://objs.db",
+    "stdout": "table \"t\" {\n  schema = schema.main\n  column \"id\" {\n    null = true\n    type = integer\n  }\n  column \"n\" {\n    null = true\n    type = text\n  }\n  primary_key {\n    columns = [column.id]\n  }\n  index \"idx_n\" {\n    columns = [column.n]\n  }\n}\nschema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "sqlite with view/index/trigger"
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://objs.db --format {{ sql . }}",
+    "stdout": "-- Create \"t\" table\nCREATE TABLE `t` (`id` integer NULL, `n` text NULL, PRIMARY KEY (`id`));\n-- Create index \"idx_n\" to table: \"t\"\nCREATE INDEX `idx_n` ON `t` (`n`);\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate diff todb --dir file://mdtodb --to sqlite://objs.db --dev-url sqlite://dev?mode=memory",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate diff nodev --dir file://mnodev --to file://schema.hcl",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"dev-url\" not set\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate validate --dir file://versql --dir-format bogus",
+    "stdout": "",
+    "stderr": "Error: unknown dir format \"bogus\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://n8.db --dir file://versql --format {{ bogus . }}",
+    "stdout": "",
+    "stderr": "Error: parse format: template: format:1: function \"bogus\" not defined\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate status -u sqlite://n8.db --dir file://versql --format {{ bogus . }}",
+    "stdout": "",
+    "stderr": "Error: parse format: template: format:1: function \"bogus\" not defined\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate lint --dir file://versql --dev-url sqlite://dev?mode=memory --latest 1 --format {{ bogus . }}",
+    "stdout": "",
+    "stderr": "Error: parse format: template: format:1: function \"bogus\" not defined\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema clean -u sqlite://n9.db --format {{ json . }}",
+    "stdout": "",
+    "stderr": "Abort: 'atlas schema clean --format' is not supported by the community version.\n\nTo install the non-community version of Atlas, use the following command:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nOr, visit the website to see all installation options:\n\n\thttps://atlasgo.io/docs#installation\n\n",
+    "exit_code": 1,
+    "note": "clean --format fresh home suppressed"
+  },
+  {
+    "command": "atlas schema apply -u sqlite://n10.db --to file://schema.hcl --lock-timeout 3s --dry-run",
+    "stdout": "-- Planned Changes:\n-- Create \"users\" table\nCREATE TABLE `users` (\n  `id` int NOT NULL,\n  `name` varchar NULL,\n  PRIMARY KEY (`id`)\n);\n-- Create \"posts\" table\nCREATE TABLE `posts` (\n  `id` int NOT NULL,\n  `user_id` int NOT NULL,\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n);\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate diff name with spaces --dir file://msp --to file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate new name with spaces --dir file://msp2",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate diff desync --dir file://vbroken --to file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "You have a checksum error in your migration directory.\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum file not found\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas -c file://atlas.hcl schema inspect --env qa",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema diff --from sqlite://mig1/s.db --to sqlite://mig1/s.db --dev-url sqlite://dev?mode=memory",
+    "stdout": "Schemas are synced, no changes to be made.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema diff --from noscheme --to file://schema.hcl",
+    "stdout": "",
+    "stderr": "Error: missing scheme. See: https://atlasgo.io/url\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://n11.db --to  --dry-run",
+    "stdout": "",
+    "stderr": "Error: one of flag(s) \"file\" or \"to\" is required\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u  --to file://schema.hcl --dry-run",
+    "stdout": "",
+    "stderr": "Error: required flag(s) \"url\" not set\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://objs.db --dev-url sqlite://dev?mode=memory",
+    "stdout": "table \"t\" {\n  schema = schema.main\n  column \"id\" {\n    null = true\n    type = integer\n  }\n  column \"n\" {\n    null = true\n    type = text\n  }\n  primary_key {\n    columns = [column.id]\n  }\n  index \"idx_n\" {\n    columns = [column.n]\n  }\n}\nschema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "dev-url on db inspect"
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://objs.db --exclude *.t --exclude *.idx_n",
+    "stdout": "table \"t\" {\n  schema = schema.main\n  column \"id\" {\n    null = true\n    type = integer\n  }\n  column \"n\" {\n    null = true\n    type = text\n  }\n  primary_key {\n    columns = [column.id]\n  }\n}\nschema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://objs.db --exclude *",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate hash --dir file://versql",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "idempotent hash"
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://objs.db -s main -s other",
+    "stdout": "table \"t\" {\n  schema = schema.main\n  column \"id\" {\n    null = true\n    type = integer\n  }\n  column \"n\" {\n    null = true\n    type = text\n  }\n  primary_key {\n    columns = [column.id]\n  }\n  index \"idx_n\" {\n    columns = [column.n]\n  }\n}\nschema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u mysql://root:pass@localhost:3306/db --dir file://versql",
+    "stdout": "",
+    "stderr": "Error: mysql: query system variables: dial tcp [::1]:3306: connect: connection refused\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate status -u postgres://user:pass@localhost:5432/test?sslmode=disable --dir file://versql",
+    "stdout": "",
+    "stderr": "Error: postgres: scanning system variables: dial tcp [::1]:5432: connect: connection refused\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas completion bash --no-descriptions",
+    "stdout": "# bash completion V2 for atlas                                -*- shell-script -*-\n\n__atlas_debug()\n{\n    if [[ -n ${BASH_COMP_DEBUG_FILE-} ]]; then\n        echo \"$*\" >> \"${BASH_COMP_DEBUG_FILE}\"\n    fi\n}\n\n# Macs have bash3 for which the bash-completion package doesn't include\n# _init_completion. This is a minimal version of that function.\n__atlas_init_completion()\n{\n    COMPREPLY=()\n    _get_comp_words_by_ref \"$@\" cur prev words cword\n}\n\n# This function calls the atlas program to obtain the completion\n# results and the directive.  It fills the 'out' and 'directive' vars.\n__atlas_get_completion_results() {\n    local requestComp lastParam lastChar args\n\n    # Prepare the command to request completions for the program.\n    # Calling ${words[0]} instead of directly atlas allows handling aliases\n    args=(\"${words[@]:1}\")\n    requestComp=\"${words[0]} __completeNoDesc ${args[*]}\"\n\n    lastParam=${words[$((${#words[@]}-1))]}\n    lastChar=${lastParam:$((${#lastParam}-1)):1}\n    __atlas_debug \"lastParam ${lastParam}, lastChar ${lastChar}\"\n\n    if [[ -z ${cur} && ${lastChar} != = ]]; then\n        # If the last parameter is complete (there is a space following it)\n        # We add an extra empty parameter so we can indicate this to the go method.\n        __atlas_debug \"Adding extra empty parameter\"\n        requestComp=\"${requestComp} ''\"\n    fi\n\n    # When completing a flag with an = (e.g., atlas -n=<TAB>)\n    # bash focuses on the part after the =, so we need to remove\n    # the flag part from $cur\n    if [[ ${cur} == -*=* ]]; then\n        cur=\"${cur#*=}\"\n    fi\n\n    __atlas_debug \"Calling ${requestComp}\"\n    # Use eval to handle any environment variables and such\n    out=$(eval \"${requestComp}\" 2>/dev/null)\n\n    # Extract the directive integer at the very end of the output following a colon (:)\n    directive=${out##*:}\n    # Remove the directive\n    out=${out%:*}\n    if [[ ${directive} == \"${out}\" ]]; then\n        # There is not directive specified\n        directive=0\n    fi\n    __atlas_debug \"The completion directive is: ${directive}\"\n    __atlas_debug \"The completions are: ${out}\"\n}\n\n__atlas_process_completion_results() {\n    local shellCompDirectiveError=1\n    local shellCompDirectiveNoSpace=2\n    local shellCompDirectiveNoFileComp=4\n    local shellCompDirectiveFilterFileExt=8\n    local shellCompDirectiveFilterDirs=16\n    local shellCompDirectiveKeepOrder=32\n\n    if (((directive & shellCompDirectiveError) != 0)); then\n        # Error code.  No completion.\n        __atlas_debug \"Received error from custom completion go code\"\n        return\n    else\n        if (((directive & shellCompDirectiveNoSpace) != 0)); then\n            if [[ $(type -t compopt) == builtin ]]; then\n                __atlas_debug \"Activating no space\"\n                compopt -o nospace\n            else\n                __atlas_debug \"No space directive not supported in this version of bash\"\n            fi\n        fi\n        if (((directive & shellCompDirectiveKeepOrder) != 0)); then\n            if [[ $(type -t compopt) == builtin ]]; then\n                # no sort isn't supported for bash less than < 4.4\n                if [[ ${BASH_VERSINFO[0]} -lt 4 || ( ${BASH_VERSINFO[0]} -eq 4 && ${BASH_VERSINFO[1]} -lt 4 ) ]]; then\n                    __atlas_debug \"No sort directive not supported in this version of bash\"\n                else\n                    __atlas_debug \"Activating keep order\"\n                    compopt -o nosort\n                fi\n            else\n                __atlas_debug \"No sort directive not supported in this version of bash\"\n            fi\n        fi\n        if (((directive & shellCompDirectiveNoFileComp) != 0)); then\n            if [[ $(type -t compopt) == builtin ]]; then\n                __atlas_debug \"Activating no file completion\"\n                compopt +o default\n            else\n                __atlas_debug \"No file completion directive not supported in this version of bash\"\n            fi\n        fi\n    fi\n\n    # Separate activeHelp from normal completions\n    local completions=()\n    local activeHelp=()\n    __atlas_extract_activeHelp\n\n    if (((directive & shellCompDirectiveFilterFileExt) != 0)); then\n        # File extension filtering\n        local fullFilter filter filteringCmd\n\n        # Do not use quotes around the $completions variable or else newline\n        # characters will be kept.\n        for filter in ${completions[*]}; do\n            fullFilter+=\"$filter|\"\n        done\n\n        filteringCmd=\"_filedir $fullFilter\"\n        __atlas_debug \"File filtering command: $filteringCmd\"\n        $filteringCmd\n    elif (((directive & shellCompDirectiveFilterDirs) != 0)); then\n        # File completion for directories only\n\n        local subdir\n        subdir=${completions[0]}\n        if [[ -n $subdir ]]; then\n            __atlas_debug \"Listing directories in $subdir\"\n            pushd \"$subdir\" >/dev/null 2>&1 && _filedir -d && popd >/dev/null 2>&1 || return\n        else\n            __atlas_debug \"Listing directories in .\"\n            _filedir -d\n        fi\n    else\n        __atlas_handle_completion_types\n    fi\n\n    __atlas_handle_special_char \"$cur\" :\n    __atlas_handle_special_char \"$cur\" =\n\n    # Print the activeHelp statements before we finish\n    if ((${#activeHelp[*]} != 0)); then\n        printf \"\\n\";\n        printf \"%s\\n\" \"${activeHelp[@]}\"\n        printf \"\\n\"\n\n        # The prompt format is only available from bash 4.4.\n        # We test if it is available before using it.\n        if (x=${PS1@P}) 2> /dev/null; then\n            printf \"%s\" \"${PS1@P}${COMP_LINE[@]}\"\n        else\n            # Can't print the prompt.  Just print the\n            # text the user had typed, it is workable enough.\n            printf \"%s\" \"${COMP_LINE[@]}\"\n        fi\n    fi\n}\n\n# Separate activeHelp lines from real completions.\n# Fills the $activeHelp and $completions arrays.\n__atlas_extract_activeHelp() {\n    local activeHelpMarker=\"_activeHelp_ \"\n    local endIndex=${#activeHelpMarker}\n\n    while IFS='' read -r comp; do\n        if [[ ${comp:0:endIndex} == $activeHelpMarker ]]; then\n            comp=${comp:endIndex}\n            __atlas_debug \"ActiveHelp found: $comp\"\n            if [[ -n $comp ]]; then\n                activeHelp+=(\"$comp\")\n            fi\n        else\n            # Not an activeHelp line but a normal completion\n            completions+=(\"$comp\")\n        fi\n    done <<<\"${out}\"\n}\n\n__atlas_handle_completion_types() {\n    __atlas_debug \"__atlas_handle_completion_types: COMP_TYPE is $COMP_TYPE\"\n\n    case $COMP_TYPE in\n    37|42)\n        # Type: menu-complete/menu-complete-backward and insert-completions\n        # If the user requested inserting one completion at a time, or all\n        # completions at once on the command-line we must remove the descriptions.\n        # https://github.com/spf13/cobra/issues/1508\n        local tab=$'\\t' comp\n        while IFS='' read -r comp; do\n            [[ -z $comp ]] && continue\n            # Strip any description\n            comp=${comp%%$tab*}\n            # Only consider the completions that match\n            if [[ $comp == \"$cur\"* ]]; then\n                COMPREPLY+=(\"$comp\")\n            fi\n        done < <(printf \"%s\\n\" \"${completions[@]}\")\n        ;;\n\n    *)\n        # Type: complete (normal completion)\n        __atlas_handle_standard_completion_case\n        ;;\n    esac\n}\n\n__atlas_handle_standard_completion_case() {\n    local tab=$'\\t' comp\n\n    # Short circuit to optimize if we don't have descriptions\n    if [[ \"${completions[*]}\" != *$tab* ]]; then\n        IFS=$'\\n' read -ra COMPREPLY -d '' < <(compgen -W \"${completions[*]}\" -- \"$cur\")\n        return 0\n    fi\n\n    local longest=0\n    local compline\n    # Look for the longest completion so that we can format things nicely\n    while IFS='' read -r compline; do\n        [[ -z $compline ]] && continue\n        # Strip any description before checking the length\n        comp=${compline%%$tab*}\n        # Only consider the completions that match\n        [[ $comp == \"$cur\"* ]] || continue\n        COMPREPLY+=(\"$compline\")\n        if ((${#comp}>longest)); then\n            longest=${#comp}\n        fi\n    done < <(printf \"%s\\n\" \"${completions[@]}\")\n\n    # If there is a single completion left, remove the description text\n    if ((${#COMPREPLY[*]} == 1)); then\n        __atlas_debug \"COMPREPLY[0]: ${COMPREPLY[0]}\"\n        comp=\"${COMPREPLY[0]%%$tab*}\"\n        __atlas_debug \"Removed description from single completion, which is now: ${comp}\"\n        COMPREPLY[0]=$comp\n    else # Format the descriptions\n        __atlas_format_comp_descriptions $longest\n    fi\n}\n\n__atlas_handle_special_char()\n{\n    local comp=\"$1\"\n    local char=$2\n    if [[ \"$comp\" == *${char}* && \"$COMP_WORDBREAKS\" == *${char}* ]]; then\n        local word=${comp%\"${comp##*${char}}\"}\n        local idx=${#COMPREPLY[*]}\n        while ((--idx >= 0)); do\n            COMPREPLY[idx]=${COMPREPLY[idx]#\"$word\"}\n        done\n    fi\n}\n\n__atlas_format_comp_descriptions()\n{\n    local tab=$'\\t'\n    local comp desc maxdesclength\n    local longest=$1\n\n    local i ci\n    for ci in ${!COMPREPLY[*]}; do\n        comp=${COMPREPLY[ci]}\n        # Properly format the description string which follows a tab character if there is one\n        if [[ \"$comp\" == *$tab* ]]; then\n            __atlas_debug \"Original comp: $comp\"\n            desc=${comp#*$tab}\n            comp=${comp%%$tab*}\n\n            # $COLUMNS stores the current shell width.\n            # Remove an extra 4 because we add 2 spaces and 2 parentheses.\n            maxdesclength=$(( COLUMNS - longest - 4 ))\n\n            # Make sure we can fit a description of at least 8 characters\n            # if we are to align the descriptions.\n            if ((maxdesclength > 8)); then\n                # Add the proper number of spaces to align the descriptions\n                for ((i = ${#comp} ; i < longest ; i++)); do\n                    comp+=\" \"\n                done\n            else\n                # Don't pad the descriptions so we can fit more text after the completion\n                maxdesclength=$(( COLUMNS - ${#comp} - 4 ))\n            fi\n\n            # If there is enough space for any description text,\n            # truncate the descriptions that are too long for the shell width\n            if ((maxdesclength > 0)); then\n                if ((${#desc} > maxdesclength)); then\n                    desc=${desc:0:$(( maxdesclength - 1 ))}\n                    desc+=\"\u2026\"\n                fi\n                comp+=\"  ($desc)\"\n            fi\n            COMPREPLY[ci]=$comp\n            __atlas_debug \"Final comp: $comp\"\n        fi\n    done\n}\n\n__start_atlas()\n{\n    local cur prev words cword split\n\n    COMPREPLY=()\n\n    # Call _init_completion from the bash-completion package\n    # to prepare the arguments properly\n    if declare -F _init_completion >/dev/null 2>&1; then\n        _init_completion -n =: || return\n    else\n        __atlas_init_completion -n =: || return\n    fi\n\n    __atlas_debug\n    __atlas_debug \"========= starting completion logic ==========\"\n    __atlas_debug \"cur is ${cur}, words[*] is ${words[*]}, #words[@] is ${#words[@]}, cword is $cword\"\n\n    # The user could have moved the cursor backwards on the command-line.\n    # We need to trigger completion from the $cword location, so we need\n    # to truncate the command-line ($words) up to the $cword location.\n    words=(\"${words[@]:0:$cword+1}\")\n    __atlas_debug \"Truncated words[*]: ${words[*]},\"\n\n    local out directive\n    __atlas_get_completion_results\n    __atlas_process_completion_results\n}\n\nif [[ $(type -t compopt) = \"builtin\" ]]; then\n    complete -o default -F __start_atlas atlas\nelse\n    complete -o default -o nospace -F __start_atlas atlas\nfi\n\n# ex: ts=4 sw=4 et filetype=sh\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "truncated output check"
+  },
+  {
+    "command": "atlas __complete schema ",
+    "stdout": "apply\tApply an atlas schema to a target database.\nclean\tRemoves all objects from the connected database.\ndiff\tCalculate and print the diff between two schemas.\nfmt\tFormats Atlas HCL files\ninspect\tInspect a database and print its schema in Atlas DDL syntax.\n:4\n",
+    "stderr": "Completion ended with directive: ShellCompDirectiveNoFileComp\n",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas __completeNoDesc migrate ",
+    "stdout": "apply\ndiff\nhash\nimport\nlint\nnew\nset\nstatus\nvalidate\n:4\n",
+    "stderr": "Completion ended with directive: ShellCompDirectiveNoFileComp\n",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://a.db -u sqlite://objs.db",
+    "stdout": "table \"t\" {\n  schema = schema.main\n  column \"id\" {\n    null = true\n    type = integer\n  }\n  column \"n\" {\n    null = true\n    type = text\n  }\n  primary_key {\n    columns = [column.id]\n  }\n  index \"idx_n\" {\n    columns = [column.n]\n  }\n}\nschema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "repeated flag: last wins"
+  },
+  {
+    "command": "atlas schema inspect --config file://.",
+    "stdout": "",
+    "stderr": "Error: <nil>: Failed to read file; The configuration file \".\" could not be read.\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect --config file://cfgx/atlas.hcl --env dev",
+    "stdout": "",
+    "stderr": "Error: config file \"cfgx/atlas.hcl\" was not found: stat cfgx/atlas.hcl: no such file or directory\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate new --dir file://versql",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "new in existing hashed dir"
+  },
+  {
+    "command": "atlas migrate validate --dir file://versql",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "validate after auto-hash"
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://ex1.db?_fk=1",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema apply -u sqlite://tx.db --to file://schema.hcl --tx-mode none --auto-approve",
+    "stdout": "-- Planned Changes:\n-- Create \"users\" table\nCREATE TABLE `users` (\n  `id` int NOT NULL,\n  `name` varchar NULL,\n  PRIMARY KEY (`id`)\n);\n-- Create \"posts\" table\nCREATE TABLE `posts` (\n  `id` int NOT NULL,\n  `user_id` int NOT NULL,\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n);\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema apply -u sqlite://tx2.db --to file://schema.hcl --tx-mode all --auto-approve",
+    "stdout": "",
+    "stderr": "Error: unknown tx-mode \"all\"\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://tx3.db --to atlas://repo/plans/x --dry-run",
+    "stdout": "",
+    "stderr": "Error: atlas remote state is not supported by the community version of Atlas.\n\nInstall the non-community version instead:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nFor more installtion options, see: https://atlasgo.io/docs#installation\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema apply -u sqlite://tx4.db --to ent://x --dry-run",
+    "stdout": "",
+    "stderr": "Error: ent:// scheme is not supported by the community version of Atlas.\n\nInstall the non-community version instead:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nFor more installtion options, see: https://atlasgo.io/docs#installation\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate diff atlas_to --dir file://mto --to atlas://x/y --dev-url sqlite://dev?mode=memory",
+    "stdout": "",
+    "stderr": "Error: atlas remote state is not supported by the community version of Atlas.\n\nInstall the non-community version instead:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nFor more installtion options, see: https://atlasgo.io/docs#installation\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate diff ent_to --dir file://mto2 --to ent://x/y --dev-url sqlite://dev?mode=memory",
+    "stdout": "",
+    "stderr": "Error: ent:// scheme is not supported by the community version of Atlas.\n\nInstall the non-community version instead:\n\n\tcurl -sSf https://atlasgo.sh | sh\n\nFor more installtion options, see: https://atlasgo.io/docs#installation\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate import --from file://versql?format=golang-migrate --to file://versql",
+    "stdout": "You have a checksum error in your migration directory.\n\n\tL2: 20220101000000_first.sql was removed\n\nPlease check your migration files and run 'atlas migrate hash' to re-hash the contents\n\n",
+    "stderr": "Error: checksum mismatch\n",
+    "exit_code": 1,
+    "note": "same dir"
+  },
+  {
+    "command": "atlas migrate status --dir file://versql?format=atlas -u sqlite://n12.db",
+    "stdout": "Migration Status: PENDING\n  -- Current Version: No migration applied yet\n  -- Next Version:    20220101000000\n  -- Executed Files:  0\n  -- Pending Files:   3\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate apply -u sqlite://nl.db --dir file://versql --exec-order non-linear --tx-mode none --format {{ json . }}",
+    "stdout": "{\"Driver\":\"sqlite\",\"URL\":{\"Scheme\":\"sqlite\",\"Opaque\":\"\",\"User\":null,\"Host\":\"nl.db\",\"Path\":\"\",\"RawPath\":\"\",\"OmitHost\":false,\"ForceQuery\":false,\"RawQuery\":\"\",\"Fragment\":\"\",\"RawFragment\":\"\",\"Schema\":\"main\"},\"Dir\":\"file://versql\",\"Pending\":[{\"Name\":\"20220101000000_first.sql\",\"Version\":\"20220101000000\",\"Description\":\"first\"},{\"Name\":\"20220102000000_second.sql\",\"Version\":\"20220102000000\",\"Description\":\"second\"},{\"Name\":\"20260922015917.sql\",\"Version\":\"20260922015917\"}],\"Applied\":[{\"Name\":\"20220101000000_first.sql\",\"Version\":\"20220101000000\",\"Description\":\"first\",\"Start\":\"2026-09-22T01:59:52.332139531Z\",\"End\":\"2026-09-22T01:59:52.34763613Z\",\"Applied\":[\"CREATE TABLE a1 (id INT);\"]},{\"Name\":\"20220102000000_second.sql\",\"Version\":\"20220102000000\",\"Description\":\"second\",\"Start\":\"2026-09-22T01:59:52.34763623Z\",\"End\":\"2026-09-22T01:59:52.36275643Z\",\"Applied\":[\"CREATE TABLE a2 (id INT);\"]},{\"Name\":\"20260922015917.sql\",\"Version\":\"20260922015917\",\"Start\":\"2026-09-22T01:59:52.36275643Z\",\"End\":\"2026-09-22T01:59:52.36645243Z\"}],\"Target\":\"20260922015917\",\"Start\":\"2026-09-22T01:59:52.326965331Z\",\"End\":\"2026-09-22T01:59:52.36645243Z\",\"Message\":\"Migrated to version 20260922015917 from  (3 migrations in total)\"}",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema fmt nested",
+    "stdout": "nested/unformatted.hcl\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "recursive fmt"
+  },
+  {
+    "command": "atlas migrate hash --dir file://afile.sql",
+    "stdout": "",
+    "stderr": "Error: sql/migrate: \"afile.sql\" is not a dir\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate validate --dir file://afile.sql",
+    "stdout": "",
+    "stderr": "Error: sql/migrate: \"afile.sql\" is not a dir\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://n13.db?mode=ro",
+    "stdout": "schema \"main\" {\n}\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema clean -u sqlite://n14.db --auto-approve",
+    "stdout": "Nothing to drop\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "clean empty db"
+  },
+  {
+    "command": "atlas schema clean -u sqlite://mig1/s.db --auto-approve",
+    "stdout": "-- Planned Changes:\n-- Disable the enforcement of foreign-keys constraints\nPRAGMA foreign_keys = off;\n-- Drop \"users\" table\nDROP TABLE `users`;\n-- Drop \"posts\" table\nDROP TABLE `posts`;\n-- Enable back the enforcement of foreign-keys constraints\nPRAGMA foreign_keys = on;\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "clean with revisions table"
+  },
+  {
+    "command": "atlas schema diff --from file://schema.hcl --to file://schema.sql --dev-url sqlite://dev?mode=memory",
+    "stdout": "-- Disable the enforcement of foreign-keys constraints\nPRAGMA foreign_keys = off;\n-- Drop \"posts\" table\nDROP TABLE `posts`;\n-- Enable back the enforcement of foreign-keys constraints\nPRAGMA foreign_keys = on;\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema diff --from file://schema.sql --to file://schema.sql --dev-url sqlite://dev?mode=memory",
+    "stdout": "Schemas are synced, no changes to be made.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate diff gm --dir file://mgm --dir-format golang-migrate --to file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate diff fm --dir file://mfw --dir-format flyway --to file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema apply -u sqlite://final.db --to file://schema.hcl --file file://schema.hcl --dry-run",
+    "stdout": "",
+    "stderr": "Error: if any flags in the group [file to] are set none of the others can be; [file to] were all set\n",
+    "exit_code": 1,
+    "note": "--file flag"
+  },
+  {
+    "command": "atlas schema apply -u sqlite://final2.db --file file://schema.hcl --dry-run",
+    "stdout": "-- Planned Changes:\n-- Create \"users\" table\nCREATE TABLE `users` (\n  `id` int NOT NULL,\n  `name` varchar NULL,\n  PRIMARY KEY (`id`)\n);\n-- Create \"posts\" table\nCREATE TABLE `posts` (\n  `id` int NOT NULL,\n  `user_id` int NOT NULL,\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n);\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "--file only"
+  },
+  {
+    "command": "atlas schema diff --from sqlite://mig1/s.db --file file://schema.hcl --dev-url sqlite://dev?mode=memory",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --file\n",
+    "exit_code": 1,
+    "note": "--file on diff"
+  },
+  {
+    "command": "atlas schema clean -u sqlite://final.db --file file://schema.hcl --dry-run",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --file\n",
+    "exit_code": 1,
+    "note": "--file on clean"
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://final.db --file file://schema.hcl",
+    "stdout": "",
+    "stderr": "Error: unknown flag: --file\n",
+    "exit_code": 1,
+    "note": "--file on inspect"
+  },
+  {
+    "command": "atlas schema inspect -u sqlite://mig1/s.db --format {{ json . }} --exclude *.atlas_schema_revisions",
+    "stdout": "{\"schemas\":[{\"name\":\"main\"}]}",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas migrate validate --dir file://versql --dev-url bogus://x",
+    "stdout": "",
+    "stderr": "Error: sql/sqlclient: unknown driver \"bogus\". See: https://atlasgo.io/url\n",
+    "exit_code": 1
+  },
+  {
+    "command": "atlas migrate hash --dir file://versql --dir-format golang-migrate",
+    "stdout": "",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "hash with mismatched format"
+  },
+  {
+    "command": "atlas schema apply -u sqlite://z1.db --to file://schema.hcl --dev-url sqlite://dev?mode=memory --auto-approve --tx-mode none",
+    "stdout": "-- Planned Changes:\n-- Create \"users\" table\nCREATE TABLE `users` (\n  `id` int NOT NULL,\n  `name` varchar NULL,\n  PRIMARY KEY (`id`)\n);\n-- Create \"posts\" table\nCREATE TABLE `posts` (\n  `id` int NOT NULL,\n  `user_id` int NOT NULL,\n  CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE\n);\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  {
+    "command": "atlas schema clean -u sqlite://z1.db --auto-approve",
+    "stdout": "-- Planned Changes:\n-- Disable the enforcement of foreign-keys constraints\nPRAGMA foreign_keys = off;\n-- Drop \"users\" table\nDROP TABLE `users`;\n-- Drop \"posts\" table\nDROP TABLE `posts`;\n-- Enable back the enforcement of foreign-keys constraints\nPRAGMA foreign_keys = on;\n",
+    "stderr": "",
+    "exit_code": 0,
+    "note": "clean after apply"
+  }
+]

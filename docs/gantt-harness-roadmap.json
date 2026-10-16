@@ -1,0 +1,58 @@
+{
+  "title": "mini-swe-agent 框架优化",
+  "subtitle": "递归生成 × Agent 自进化",
+  "style": "light",
+  "language": "zh",
+  "taskLabel": "工作内容",
+  "cols": [
+    { "label": "W3", "wk": "9月",  "type": "work" },
+    { "label": "W4", "wk": "9月",  "type": "work" },
+    { "label": "W1", "wk": "10月", "type": "work" },
+    { "label": "W2", "wk": "10月", "type": "work" },
+    { "label": "W3", "wk": "10月", "type": "work" },
+    { "label": "W4", "wk": "10月", "type": "work" },
+    { "label": "W1", "wk": "11月", "type": "work" },
+    { "label": "W2", "wk": "11月", "type": "work" },
+    { "label": "W3", "wk": "11月", "type": "work" },
+    { "label": "W4", "wk": "11月", "type": "work" },
+    { "label": "W1", "wk": "12月", "type": "work" },
+    { "label": "W2", "wk": "12月", "type": "work" },
+    { "label": "W3", "wk": "12月", "type": "work" },
+    { "label": "W4", "wk": "12月", "type": "work" }
+  ],
+  "groups": [
+    {
+      "label": "递归生成 · 流水线验证",
+      "tasks": [
+        { "label": "implement 阶段验证（17 模块并行）", "startIdx": 0, "endIdx": 1 },
+        { "label": "integrate 阶段验证（编译+全回归）", "startIdx": 1, "endIdx": 1 },
+        { "label": "atlas 端到端首跑 + baseline 对照", "startIdx": 1, "endIdx": 1 }
+      ]
+    },
+    {
+      "label": "递归生成 · 扩展优化",
+      "tasks": [
+        { "label": "probe 多 CLI 风格适配（flag/urfave）", "startIdx": 2, "endIdx": 3 },
+        { "label": "plan/implement 模板与步数调优", "startIdx": 3, "endIdx": 4 },
+        { "label": "批量任务扩展与失败模式收集", "startIdx": 4, "endIdx": 5 },
+        { "label": "生成速度与 token 成本优化（缓存/增量/Flash 分工）", "startIdx": 6, "endIdx": 7 }
+      ]
+    },
+    {
+      "label": "Agent 自进化",
+      "tasks": [
+        { "label": "自进化机制设计（跑分→归因→变异→重跑）", "startIdx": 8, "endIdx": 9 },
+        { "label": "自进化 v1 闭环验证（atlas）", "startIdx": 10, "endIdx": 11 },
+        { "label": "多轮进化迭代（分数/速度/成本）", "startIdx": 11, "endIdx": 12 }
+      ]
+    },
+    {
+      "label": "评测与收尾",
+      "tasks": [
+        { "label": "全量 ProgramBench 评测", "startIdx": 13, "endIdx": 13 },
+        { "label": "结果分析与技术报告", "startIdx": 13, "endIdx": 13 }
+      ]
+    }
+  ],
+  "milestones": []
+}
