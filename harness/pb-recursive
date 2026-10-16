@@ -1,0 +1,12 @@
+#!/bin/bash
+# Recursive-generation runner launcher.
+# Uses the vendored framework at harness/minisweagent (NOT site-packages) and the
+# ProgramBench project venv, so harness is self-contained.
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export PYTHONPATH="$REPO/harness:$REPO/harness/runners:${PYTHONPATH:-}"
+export MSWEA_SILENT_STARTUP=1
+# Retry a model request at most twice (default is 10). With a 300s per-request
+# timeout, worst case for one request is ~2*300 + backoff ≈ 10min instead of
+# ~26min, so a dead gateway cannot burn the whole wall-clock budget in one spot.
+export MSWEA_MODEL_RETRY_STOP_AFTER_ATTEMPT=2
+exec uv run --project "$REPO" python -m pb_recursive "$@"

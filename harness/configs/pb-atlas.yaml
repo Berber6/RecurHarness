@@ -1,0 +1,27 @@
+environment:
+  cwd: "/workspace"
+  timeout: 180
+  container_timeout: "14h"
+  environment_class: "docker"
+  executable: "docker"
+  run_args:
+    - "--rm"
+    - "--network"
+    - "none"
+    - "--cpus"
+    - "8"
+    - "--memory"
+    - "8g"
+    - "--memory-swap"
+    - "8g"
+    - "--user"
+    - "agent"
+    - "--cap-drop"
+    - "SYS_PTRACE"
+  env: {}
+
+model:
+  litellm_model_registry: "/home/berber/.config/mini-swe-agent/glm_prices.json"
+  cost_tracking: "default"
+  model_kwargs:
+    timeout: 300
