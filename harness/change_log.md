@@ -622,3 +622,145 @@ probe 观察到但无模块覆盖 = 失分缺口」
 
 v1.4.5-generic 84 分 > v1.3 83 分 > baseline 72 分。泛化版同时是
 分数最高 + 可跨任务复用。
+
+## 2026-10-16 plan 归因复盘 + probe 成功路径强化
+
+### 归因结论：瓶颈不在 plan，在 probe 的观测粒度
+
+v1.4.5-generic 得分 84（baseline 72），310 个失败。逐层归因：
+
+1. **不是 plan 的问题**：contracts.json 质量高（10 模块 × 2.7-10KB 结构化契约：
+   role/behaviors/errors/regression + 89 个 golden_samples + command_tree + 拓扑序），
+   且自述 "Reconstructed from ... 345 recorded invocations"，plan 确实消费了 findings。
+   （注：早期"契约字段全空"是检查脚本只认旧键名 summary/frozen_behaviors 的误报）
+2. **不是环境禁网的问题**：实测确认评测中"compile 阶段禁网、test 执行阶段有网"
+   （DOCKER_RUN_ARGS=[]，源码注释 "Test-execution containers are never touched"，
+   getent hosts github.com 实测解析成功）。且失败主力 migrate apply 用 sqlite（纯离线）。
+3. **真因**：失败集中在深层语义（192/310 是 migrate apply 类，0 个 help），
+   这些行为需要"在真实 sqlite 上成功跑完多步工作流"才能观测，属 probe 的观测缺口。
+
+### 实测验证：成功路径离线完全可观测
+
+在 --network none 的 cleanroom 容器里手工验证 (见本次会话)：
+- migrate new→apply→status→schema inspect 全跑通，捕获到真实 DDL（含 atlas 自建
+  atlas_schema_revisions 表）
+- schema apply 加列后数据保留（INSERT 1 行 → ALTER ADD COLUMN → 仍 1 行）
+
+### probe 提示词改动
+
+新增维度 0 "SUCCESS-PATH WORKFLOWS"（置于错误路径维度之前）：
+- 先让工具真正成功跑通端到端工作流（优先离线后端：本地文件/内存存储/scratch dir）
+- 多步序列（create→apply→回读→update→重跑），每步捕获完整 stdout + 副作用
+  （建的文件/写进存储的记录/跨步状态变化/更新时数据是否保留）
+- 要求用独立命令回读验证（write + read-back 都记录）
+- 预算纪律改为"前 1/3 步数用于成功路径"，并说明"错误字符串本身不足以复现工具行为"
+
+### 基线缺口（供新 run 对比）
+
+旧 probe 已探到 template/foreign-key/baseline/tx-mode/exec-order 的成功态，
+但完全没探：data-preservation（插数据→变更→验证）、index/unique constraint 的
+DDL 形态。新 run 应补齐这些。
+
+### 回归修复（同日）：格式漂移
+
+首次跑强化提示词后，agent 自然提交（110 步 Submitted）但把 probe_findings.json 写成了
+"研究报告"字典（tool/key_behaviors/command_tree/exit_code_conventions），
+0 条 {"command","stdout","stderr","exit_code"} 记录 - 下游无法消费。
+
+根因：维度 0 的措辞偏"叙事化"（make it WORK / verify your understanding），
+叠加松散的落盘说明，agent 转向写总结。
+
+修复：
+1. 落盘格式升为硬约束 - 明确"JSON ARRAY，每元素恰为四字段，逐条 append"，
+   加负面示例"禁止 dict/report/narrative keys"
+2. 维度 0 明确"read-back 和 artifact 检查也只是日志里的又一条记录，
+   绝不用 prose write-up 替代日志"
+
+## 2026-10-16 v1.5：PROBE_SYSTEM 平衡修正 + 全流水线验证
+
+### 上一步的教训（已修正）
+
+首版强化提示词加了"前 1/3 步数用于成功路径"的硬预算约束，实测反例：
+- 条数 517→263，丢失 template/foreign-key 覆盖
+- 结论：成功路径"优先"会挤压广度，伤到本已 work 的部分
+
+### 修正后的 PROBE_SYSTEM（5864 字符）
+
+1. 保留 OUTPUT FORMAT 硬约束（JSON array + 四字段 + 禁 prose，修复格式漂移）
+2. 保留成功路径维度（改为维度 1，与错误路径并重而非优先）
+3. 删除"前 1/3 步数"硬约束 → 改为"成功路径与广度都要覆盖，别让一方饿死另一方"
+4. 新增 OBJECT richness 要求：成功样例要覆盖对象全feature（多实体/可选必填字段/
+   默认值/键约束关系唯一性/嵌套复合结构/增删操作），而非单个玩具例子
+   —— 直击基线的确切缺口（index/unique constraint/数据保留未被探到，因样例太简单）
+
+### 验证方式
+
+完整流水线 probe→plan→implement→integrate（-w 3），对比 v1.4.5-generic (84分)：
+- probe 侧：条数、成功/错误分布、OBJECT richness 缺口是否补齐
+- 端到端：score、各 block 通过率
+
+## 2026-10-16 v1.4.6：implement 收尾验收（checks 机制，方向 2 第一步）
+
+### 背景（重新归因）
+
+v1.4.5-generic (84分) 的 310 失败重新分析，推翻"瓶颈=probe 行为缺失"的旧结论：
+- 9 个失败行为族里 5 个 probe 探过（含成功态记录），仍失败 → "探到" ≠ "实现对"
+- 契约 golden_samples 成功态 34 : 报错态 72 → 真相偏向报错路径
+- integrate 撞 300 步上限
+真正漏斗：探测→契约→实现，成功态细节逐级衰减；implement"自评完成"不可靠。
+
+### 改动（checks 机制，三处）
+
+1. **probe** 额外产出 `probe_checks.json`：把真实观测固化成可执行断言
+   （command + setup 前置状态 + expect{exit_code/stdout_contains/stdout_regex/
+   stderr_*/files_exist}）；易变字段用 regex。实测 53 条、格式全合规、44 条带 setup
+2. **plan** 读 checks 并**逐条分派到模块**（写进 contracts.json 每模块 checks 字段）
+3. **implement** 收尾**跑本模块 checks**，全绿才算完；有界修复（最多 2 轮）；
+   checks 结果写进 module_status.md。runner 侧校验分派质量并警告缺失
+
+### 设计决策
+
+- 不新增流水线阶段（integrate 保持独立，checks 只是 implement 的验收标准）
+- 有界修复（2 轮）防止 checks 变成新的"无限打磨"陷阱
+- integrate 收尾跑 checks 的"第二层"暂不做——先验证第一层是否有效
+
+### 验证中
+
+probe-only 验证通过（177 步自然提交，53 条 checks）。全流水线 v1.4.6 进行中，
+对比 v1.4.5-generic 的 84 分。
+
+## 2026-10-17 v1.4.6 结果：checks 机制有效，89 分（系列新高）
+
+### 结果
+
+| | v1.4.5-generic | **v1.4.6** |
+|---|---|---|
+| 分数 | 84 | **89** 🎉 |
+| 通过 | 1419/1732 (82%) | **1548/1732 (89%)** |
+| 失败 | 310 | **181** |
+
+**净修复 169 个测试，仅回退 40 个**（净 +129）。修复的正是深层语义：
+template 渲染（lower/json/mermaid/sql format）、schema apply 参数校验、
+schema fmt 目录行为、status template 边界 —— 全是"需要成功执行才能观测"的行为，
+正是 checks 机制的靶心。
+
+### 机制验证
+
+三齿轮全通：
+1. probe 产出 56 条 checks（格式全合规，44 条带 setup 前置状态）
+2. plan 全部分派到 9 模块（56/56，无遗漏；migrate_apply 拿 12 条）
+3. implement 收尾跑 checks —— 模块多为 LimitsExceeded（用满 150 步修到达标），
+   而非"自评完成"
+
+### 观察
+
+- 多数模块 LimitsExceeded（vs v1.4.5-generic 的 8/10 Submitted）：checks 给了
+  客观完成标准，agent 会一直修到预算耗尽。这是**良性**的——修了 169 个测试。
+- integrate 自然提交（190 步，未撞 300 上限），submission 7MB。
+- 40 个回退需要在下一版关注（可能是 checks 未覆盖的角落被挤占）。
+
+### 结论
+
+**方向 2（checks 验收）第一层（implement 收尾）已见效，+5 分。**
+下一步候选：① 分析 40 个回退；② integrate 收尾也跑 checks（原计划第二层）；
+③ checks 覆盖更全的易变字段处理。

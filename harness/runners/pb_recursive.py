@@ -102,11 +102,12 @@ def probe_phase(env, instance, model_config, out_dir, progress_manager=None) -> 
         traj_path=out_dir / "probe.traj.json",
         progress_manager=progress_manager,
     )
-    try:
-        container_pull(env, "/workspace/probe_findings.json", out_dir / "probe_findings.json")
-        logger.info(f"Pulled probe_findings.json for {instance['instance_id']}")
-    except Exception as e:
-        logger.error(f"probe phase did not produce probe_findings.json: {e}")
+    for artifact in ("probe_findings.json", "probe_checks.json"):
+        try:
+            container_pull(env, f"/workspace/{artifact}", out_dir / artifact)
+            logger.info(f"Pulled {artifact} for {instance['instance_id']}")
+        except Exception as e:
+            logger.error(f"probe phase did not produce {artifact}: {e}")
     return info
 
 
@@ -203,6 +204,18 @@ def implement_phase(env, instance, model_config, out_dir, workers: int, progress
         return last
 
     modules = json.loads(contracts_file.read_text())["modules"]
+    checks_file = out_dir / "probe_checks.json"
+    if checks_file.is_file():
+        checks = json.loads(checks_file.read_text())
+        assigned = sum(len(m.get("checks") or []) for m in modules)
+        logger.info(f"Checks: {len(checks)} probed, {assigned} assigned across {len(modules)} modules")
+        if any(not m.get("checks") for m in modules):
+            logger.warning("Some modules have no checks assigned by plan - "
+                           f"they will implement without verification: "
+                           f"{[m['name'] for m in modules if not m.get('checks')]}")
+    else:
+        logger.warning("No probe_checks.json - implement runs without checks (legacy behavior)")
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as ex:
         results = list(ex.map(implement_one, modules))
 
@@ -290,16 +303,78 @@ PROBE_SYSTEM = """You are a systematic reverse-engineering probe. You interact w
 executable and record its behavior. You do NOT write an implementation.
 
 You may run ./executable with any inputs. You must NOT decompile it or use strace/ltrace on it.
-Record every observation into /workspace/probe_findings.json as structured entries:
-{"command": ..., "stdout": ..., "stderr": ..., "exit_code": ...}
-Use the literal prefix "./executable <args>" as the command string (never the tool's own
-name, absolute paths, or wrappers) so downstream tools can match entries uniformly.
 
-Work through these dimensions. The METHOD is fixed; WHICH things to try under each
-dimension you must DERIVE from the tool itself (its README, its own sample files, and
-what its --help and error messages reveal). Do not assume any particular tool type.
+OUTPUT FORMAT (hard requirement - the downstream phase parses this file):
+/workspace/probe_findings.json MUST be a JSON ARRAY, each element exactly:
+{"command": "<the invocation>", "stdout": "<raw stdout>", "stderr": "<raw stderr>", "exit_code": <int>}
+- One element per invocation you ran. Append as you go; the file is the evidence log.
+- command: use the literal prefix "./executable <args>" (never the tool's own name,
+  absolute paths, or wrappers) so entries match uniformly downstream.
+- stdout/stderr: copy the raw bytes. Do NOT paraphrase, summarize, or write prose.
+- Do NOT emit a dict/report/document with narrative keys (tool, key_behaviors, ...) -
+  a prose summary is unusable downstream. Structured per-command entries ONLY.
 
-1. COMMAND SURFACE
+SECOND OUTPUT - /workspace/probe_checks.json (this is what verifies the reimplementation):
+Alongside the findings log, distill the most important behaviors you observed into a
+JSON ARRAY of executable CHECKS. Each check re-runs a command and asserts the real
+observed result. The implement phase runs these to decide whether its code is correct.
+Each element:
+{
+  "command": "./executable <args>",      // the invocation to (re)run
+  "setup": "<shell|null>",               // shell commands to create any needed state
+                                          // (scratch dir, input files, initial DB) BEFORE the run; null if none
+  "expect": {
+    "exit_code": <int>,                  // exact expected exit code
+    "stdout_contains": ["...", ...],     // substrings that MUST appear (use sparingly, stable ones)
+    "stderr_contains": ["...", ...],     // substrings that MUST appear
+    "stdout_regex": ["...", ...],        // regexes for parts that VARY (timestamps, versions, paths)
+    "files_exist": ["...", ...]          // paths that MUST exist after the run (side-effect proof)
+  }
+}
+Rules for good checks:
+- Derive every expectation from a REAL run you recorded, never invent one.
+- Prefer exit_code + one or two stable substrings over giant verbatim blobs.
+- For volatile parts (timestamps like 20261016034007, version strings, absolute paths),
+  use "stdout_regex"/"stderr_regex" patterns instead of exact substrings - a check that
+  fails because a timestamp changed is worse than no check.
+- Every check must be reproducible from a clean scratch dir: put all setup in "setup".
+- Aim for breadth across the tool's command surface and success/error paths, but only
+  include checks you have actually run and seen pass. Order them simplest-first.
+
+Work through ALL of these dimensions - each one matters, do not sacrifice one for another.
+The METHOD is fixed; WHICH things to try under each dimension you must DERIVE from the
+tool itself (its README, its own sample files, and what its --help and error messages
+reveal). Do not assume any particular tool type.
+
+1. SUCCESS-PATH WORKFLOWS
+   - The richest behavior is what the tool does when it SUCCEEDS, not when it errors.
+     Make the tool actually WORK end to end, and exercise the SUCCESS output as hard as
+     you exercise errors.
+   - Identify the tool's primary object (the thing it creates/reads/transforms) and the
+     minimal offline path that exercises it fully. Prefer inputs that need no network:
+     local files, in-memory/embedded stores, scratch dirs. If the tool talks to external
+     services, use any embedded/local/offline backend it supports; if none exists, say so.
+   - Run a COMPLETE workflow as a real multi-step sequence in one scratch dir, e.g.
+     create -> apply/run -> inspect/read-back -> update -> re-run. Do NOT stop after the
+     first successful command.
+   - Vary the OBJECT richness, not just one toy example: exercise the full feature set of
+     the tool's input domain - many entities/records, optional and required fields,
+     defaults, keys/constraints/relationships/uniqueness, nested or compound structures,
+     ordering, and both add and remove/drop operations. A single trivial example hides most
+     of the successful output (e.g. the exact DDL/format the tool emits for each feature).
+   - Capture the full stdout (verbatim, including any headers, notices, tables or
+     formatting) and exit code of EVERY successful step. When a step's stdout is long
+     but important, keep it in full - success output IS the spec.
+   - Also observe SIDE EFFECTS: files/dirs created (names + content), records written to
+     any embedded store, state that changes across steps, whether existing data survives
+     an update. You cannot always see these in stdout - read the files/store back with
+     an independent command (inspect/list/status) or inspect the artifacts, and there too
+     record the command you ran and its full output.
+   - Everything goes into the SAME per-command log (the JSON array above): each read-back
+     and each artifact-inspecting command is just another element. Never replace the log
+     with a prose write-up.
+
+2. COMMAND SURFACE
    - Start at ./executable --help and recursively expand every subcommand's --help
      (all depths). Note hidden/internal commands you discover along the way.
    - For each subcommand: try missing args, invalid args, invalid flag values, --help
@@ -307,7 +382,7 @@ what its --help and error messages reveal). Do not assume any particular tool ty
    - Things --help cannot show: error messages, env vars, stdin handling, and any
      real execution you can do safely.
 
-2. INPUT SURFACE  (this is where most hidden behavior lives)
+3. INPUT SURFACE  (this is where most hidden behavior lives)
    - Identify every KIND of input the tool consumes: command arguments, files it reads,
      directory layouts, connection strings / identifiers, config files, stdin, env vars.
      Read the README and the tool's own bundled sample/example files to find these.
@@ -323,19 +398,22 @@ what its --help and error messages reveal). Do not assume any particular tool ty
      remote services), enumerate each referenced family WITHOUT real credentials and
      record the exact error. Infer the families from the README, not from guesswork.
 
-3. OUTPUT SURFACE
+4. OUTPUT SURFACE
    - For each command, capture stdout, stderr and exit code under: normal input, error
      input, empty input, boundary values, and any --format/--output variants the tool
      offers.
 
-4. STATE SURFACE
+5. STATE SURFACE
    - For commands that persist state (write files, create dirs, modify config), run them
      in a scratch dir and record what they create/modify.
 
-Budget discipline: breadth first (cover every subcommand x key input kind) before depth.
-Finish by ensuring probe_findings.json is complete.
-HOW TO FINISH: every response MUST include at least one bash tool call. When
-probe_findings.json is complete, submit with exactly:
+Budget discipline: cover BOTH the success paths (dimension 1) AND the breadth of
+subcommands x input kinds (dimensions 2-5). Do not let one starve the other - a tool
+you have not made succeed is under-probed, but so is one whose commands you never ran.
+Say 10-20 checks in probe_checks.json is a good target; only include ones you verified pass.
+HOW TO FINISH: every response MUST include at least one bash tool call. When BOTH
+probe_findings.json (the full log) and probe_checks.json (the executable checks) are
+complete, submit with exactly:
 echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT
 as your final command - never end with a plain text summary."""
 
@@ -362,6 +440,13 @@ observations) and README.md, produce:
 6. In each module's cli_contract, specify a LEAN regression script: a handful (~5-10)
    of representative cases, not an exhaustive suite. Exhaustive per-module test suites
    are the main cost driver and are not needed - the official grader tests behavior.
+7. ASSIGN THE CHECKS. /workspace/probe_checks.json contains executable checks distilled
+   from real runs. Attribute EVERY check to exactly one module (the module that owns the
+   command it exercises) and put it in that module as a "checks" list. A check whose
+   command spans modules goes to the module owning the command's primary entry point.
+   Do NOT drop checks and do NOT invent new ones - redistribute the given ones verbatim
+   (you may adjust only the "module" attribution). The implement phase runs each module's
+   checks to decide if its code is correct, so a missing attribution = an unverified module.
 
 CRITICAL ORDERING: write /workspace/contracts.json FIRST (before the skeleton, before
 anything else) - the next phase reads it and fails without it. Then the skeleton, then
@@ -405,10 +490,29 @@ Rules:
 - Be precise and honest in module_status.md: list exact commands + expected vs actual.
   A good status file lets integrate fix your gaps in few steps; a vague one wastes
   integrate's budget re-discovering them.
-- DONE CRITERIA (strict): compiles + your regression script covers EVERY frozen
-  behavior in your contract (and you have run it; fix at most TWO rounds on failures)
-  + module_status.md written. Finishing with only part of the contract covered is a
-  FAILED module - use your remaining steps on uncovered behaviors instead.
+- MANDATORY CHECKS (this is how correctness is judged - do NOT skip): your module entry
+  in /workspace/contracts.json has a "checks" list. These are REAL observations of the
+  reference executable, distilled into executable assertions. After your code compiles,
+  run every check for your module and make them pass. A check runs a command (after
+  optional "setup" shell) and asserts the "expect" block: exit_code, stdout/stderr
+  contains-substrings, stdout/stderr regexes, and files that must exist afterwards.
+  Build a small runner script (e.g. checks/run_<module>.sh) that executes each check from
+  a CLEAN scratch dir (re-running "setup" each time), prints PASS/FAIL per check with the
+  expected-vs-actual diff on failure, and exits non-zero if any fail. Use it to drive your
+  fixes - the expected values ARE the ground truth from the real binary.
+  VOLATILE fields: match with the regexes the check provides; do NOT hardcode a timestamp
+  or version you saw once. If a check genuinely cannot pass because it encodes a
+  non-reproducible value, note it in module_status.md and move on - but first assume you
+  must implement the behavior, not that the check is wrong.
+- FIX BUDGET (hard rule): implement, run your regression script and your CHECKS, then fix
+  at most TWO rounds. After that, STOP - even if some cases still fail. Do not chase
+  perfection: you cannot see the other modules or the real grader, so polishing is blind.
+- DONE CRITERIA (strict): compiles + your module's CHECKS all pass (or the 2-round fix
+  budget is exhausted) + your regression script covers EVERY frozen behavior in your
+  contract + module_status.md written. Finishing with only part of the contract covered
+  is a FAILED module - use your remaining steps on uncovered behaviors instead.
+- module_status.md MUST report, per check: command, PASS/FAIL, and on failure the exact
+  expected vs actual. The integrate phase uses this to fix what you could not.
 - HOW TO FINISH (critical): every response MUST include at least one bash tool call.
   When your module is done, write module_status.md, then submit with exactly:
   echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT
@@ -418,7 +522,11 @@ Rules:
 IMPLEMENT_INSTANCE = """Task instance: {{ instance.instance_id }}
 Implement module: {{ module.name }}
 Contract: {{ module.cli_contract }}
-Depends on: {{ module.depends_on | join(', ') }}"""
+Depends on: {{ module.depends_on | join(', ') }}
+
+Your module's CHECKS (executable assertions distilled from the real reference binary;
+make these pass - see the MANDATORY CHECKS rule in your system prompt):
+{{ module.checks | tojson(indent=2) if module.checks else "[]  (no checks assigned to this module)" }}"""
 
 INTEGRATE_SYSTEM = """You are integrating independently-implemented modules of a reverse-engineered
 codebase in /workspace. The skeleton already has a working compile.sh - never rewrite
