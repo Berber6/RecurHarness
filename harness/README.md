@@ -39,10 +39,10 @@ mini-extra programbench --model openai/GLM-5.3 --filter ariga__atlas \
 
 | 阶段 | 模型 | 产物 | 步数上限 |
 |---|---|---|---|
-| probe | Flash（--probe-model） | probe_findings.json（命令树全深度 + 错误路径 + 边界行为，agent 全权枚举） | 200 |
-| plan | 主力 | ARCHITECTURE.md + contracts.json（冻结契约）+ 骨架 + compile.sh | 130 |
-| implement（并行） | 主力 | 各模块代码 + module_status.md | 90/模块 |
-| integrate | 主力 | compile.sh 产出 executable + 全回归通过 | 220 |
+| probe | 探测模型（--probe-model） | probe_findings.json（命令树全深度 + 错误路径 + 边界行为 + 内嵌表达式语言，agent 全权枚举）；收尾由纯程序实跑每条 check 得到 validated_checks.json | 200 |
+| plan | 主力 | ARCHITECTURE.md + specs.json（模块规格，冻结）+ 骨架 + compile.sh | 160 |
+| implement（并行） | 主力 | 各模块代码 + module_status.md | 150/模块 |
+| integrate | 主力 | compile.sh 产出 executable + 全回归通过 | 300 |
 
 上下文隔离：各阶段独立会话，只通过结构化产物（JSON/代码）传递。
 plan 失败时 implement 回退为单会话全量实现（MONOLITHIC 模板，吃 probe_findings.json）。
@@ -54,6 +54,9 @@ plan 失败时 implement 回退为单会话全量实现（MONOLITHIC 模板，�
   它自己从 `--help` 递归展开命令树（实测可到第三层并发现隐藏命令），并补齐
   错误路径/环境变量/配置文件/stdin 等脚本够不到的行为。
 - **plan 输入 = probe_findings.json（唯一）**：脚本产物 probe_matrix.json 已废除。
+- **probe 自带验收收尾**：探测 agent 写的 check 期望值可能是编的，所以 probe 会话一结束
+  就用纯程序在容器里实跑每条 check，只留真通过的。它与 probe 共用容器和产物，不单列
+  成阶段。
 - **vendor 而非 import site-packages**：重装/升级 mini 不影响 harness；后续对
   框架层（如 agent 自进化）的修改直接改 harness/minisweagent。
 

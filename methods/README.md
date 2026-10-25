@@ -20,7 +20,9 @@ harness）、`glm-atlas-golden-v1-XX`（模板改进 v1）、`glm-atlas-recursiv
 | `glm-atlas-recursive-v1.4.3/` | ariga__atlas.6d81150 | 73 | 2026-10-10 | 收尾修复生效（9/10 Submitted）但早收工致浅 |
 | `glm-atlas-recursive-v1.4.4/` | ariga__atlas.6d81150 | 73 | 2026-10-10 | 组合完整方案；发现自测 fixture 代表性瓶颈 |
 | `glm-atlas-recursive-v1.4.5/` | ariga__atlas.6d81150 | 77 | 2026-10-11 | fixture 多样化修复生效（cmdlog +43pp、datasources 32% 新高） |
-| `glm-atlas-recursive-v1.4.5-generic/` | ariga__atlas.6d81150 | **84** | 2026-10-16 | **prompt 泛化（通用四维度），历史最高 + 可跨任务复用** |
+| `glm-atlas-recursive-v1.4.5-generic/` | ariga__atlas.6d81150 | 84 | 2026-10-16 | prompt 泛化（通用四维度），可跨任务复用 |
+| `glm-atlas-recursive-v1.4.6/` | ariga__atlas.6d81150 | **89** | 2026-10-16 | **checks 验收机制，历史最高** |
+| `glm-atlas-recursive-v1.5.1/` | ariga__atlas.6d81150 | 86 | 2026-10-25 | 断言无上限（56→137 条）+ 隐藏命令/表达式语言探测 + 验证误杀修复 |
 
 ## 关键数字（glm-atlas-baseline-72）
 

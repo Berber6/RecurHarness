@@ -21,6 +21,7 @@ environment:
   env: {}
 
 model:
+  model_name: "openai/DeepSeek-V4.1-Flash-1017"
   litellm_model_registry: "/home/berber/.config/mini-swe-agent/glm_prices.json"
   cost_tracking: "default"
   model_kwargs:

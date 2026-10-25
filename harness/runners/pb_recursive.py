@@ -2,7 +2,7 @@
 
 Pipeline: probe (Flash) -> plan (main model) -> implement modules (parallel) -> integrate.
 Each phase gets its own agent session; context flows only through structured artifacts
-(probe findings, contracts, code). All framework code (agents/environments/models) is
+(probe findings, specs, code). All framework code (agents/environments/models) is
 vendored at harness/minisweagent — launched via harness/pb-recursive.
 
 Usage:
@@ -14,6 +14,7 @@ Usage:
 import concurrent.futures
 import copy
 import json
+import shutil
 import subprocess
 import time
 import traceback
@@ -38,6 +39,18 @@ Phases: probe -> plan -> implement -> integrate. Output is compatible with
 """
 
 _IMAGE_TAG = "task_cleanroom_v6"
+
+# Steps a single module session may spend: read spec, write code, compile, run its checks.
+# Measured across runs, modules that finish on their own use a median of 80 steps and at
+# most 123; the ones that hit the old 150 cap were the complex modules that most needed
+# the headroom. 250 leaves room for those without letting a session ramble.
+MODULE_STEP_BUDGET = 250
+# Wall clock for one module session. The step budget, not the clock, is meant to be the
+# real limit: at the slowest rate observed (45 s/step, a module doing byte-level diffing
+# against the reference) 250 steps take ~3.1 h, so 3.5 h leaves headroom without letting
+# a session sit idle. API latency is not the driver here - median call is under 2 s and
+# local tool execution dominates.
+MODULE_WALL_TIME = 12600
 
 app = typer.Typer(rich_markup_mode="rich", add_completion=False)
 
@@ -83,6 +96,142 @@ def container_pull(env, container_path: str, local_path: Path) -> None:
     )
 
 
+def container_push(env, local_path: Path, container_path: str) -> None:
+    """Copy a file from the host into the container."""
+    executable = getattr(getattr(env, "config", None), "executable", None)
+    if not getattr(env, "container_id", None) or not executable:
+        raise RuntimeError("container_push requires a Docker environment with container_id")
+    subprocess.run(
+        [executable, "cp", str(local_path), f"{env.container_id}:{container_path}"],
+        check=True, capture_output=True, text=True,
+    )
+
+
+# Runs inside the container. For each check: fresh scratch dir -> setup -> command ->
+# compare against expect. Emits {valid, weak, invalid}. Pure program, no model.
+CHECK_VERIFIER_SRC = r'''
+import json, os, re, subprocess, sys, tempfile, shutil
+
+checks_path, out_path = sys.argv[1], sys.argv[2]
+checks = json.load(open(checks_path))
+workspace = os.getcwd()
+
+# The task image ships the reference binary as execute-only (---x--x--x), which makes
+# any setup that reads or copies it die with PermissionError. Checks only need to run
+# it, so grant read where we can and otherwise leave the mode alone.
+try:
+    exe = os.path.join(workspace, "executable")
+    if os.path.exists(exe):
+        os.chmod(exe, os.stat(exe).st_mode | 0o444)
+        subprocess.run(["chmod", "a+r", exe], capture_output=True)
+except Exception:
+    pass
+
+WORKSPACE_RE = re.compile(re.escape(workspace) + r"/([A-Za-z0-9_.\-/]+)")
+
+def mirrored_paths(setup):
+    """Paths setup builds under the workspace that the check may reference relatively.
+
+    The probe agent works inside the workspace, so its setups write fixtures as
+    /workspace/scratch/x while the check command says scratch/x. Those two agree only
+    if the scratch dir mirrors the fixture, so collect the workspace-relative paths a
+    setup mentions and copy them in after the setup runs."""
+    found = []
+    for m in WORKSPACE_RE.finditer(setup):
+        rel = m.group(1).rstrip(".,;)\"'")
+        rel = rel.split("$")[0].split("*")[0].rstrip("/")
+        if rel and rel not in found:
+            found.append(rel)
+    return found
+
+def run_in_fresh(cmd, setup, file_targets):
+    """Execute setup then cmd in a clean dir. Returns (stdout, stderr, code, present)
+    where present maps each files_exist target to whether it exists afterwards.
+    Absolute targets are checked on the real filesystem; relative ones inside scratch."""
+    d = tempfile.mkdtemp(prefix="chk_")
+    try:
+        if setup:
+            subprocess.run(setup, shell=True, cwd=d, capture_output=True, text=True, timeout=120)
+            for rel in mirrored_paths(setup):
+                src = os.path.join(workspace, rel)
+                dst = os.path.join(d, rel)
+                if not os.path.exists(src) or os.path.exists(dst):
+                    continue
+                os.makedirs(os.path.dirname(dst) or d, exist_ok=True)
+                if os.path.isdir(src):
+                    shutil.copytree(src, dst, dirs_exist_ok=True)
+                else:
+                    shutil.copy(src, dst)
+        r = subprocess.run(cmd, shell=True, cwd=d, capture_output=True, text=True, timeout=120)
+        present = {}
+        for t in file_targets:
+            if os.path.isabs(t):
+                # A target the probe recorded against the workspace tree (it wrote the
+                # fixture there) is satisfied by either location.
+                present[t] = os.path.exists(t) or os.path.exists(
+                    os.path.join(d, os.path.relpath(t, workspace))
+                ) if t.startswith(workspace + os.sep) else os.path.exists(t)
+            else:
+                present[t] = os.path.exists(os.path.join(d, t))
+        return r.stdout, r.stderr, r.returncode, present
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
+valid, weak, invalid = [], [], []
+for c in checks:
+    cmd = c.get("command", "")
+    setup = c.get("setup") or ""
+    expect = c.get("expect") or {}
+    # Resolve ./executable relative to workspace regardless of the scratch cwd.
+    # Strip a leading "cd /workspace &&": the probe agent runs inside the workspace and
+    # writes that prefix naturally, but every check must execute inside the scratch dir
+    # or its setup files and its command would land in different directories.
+    def _scrub(s):
+        s = s.replace("./executable", os.path.join(workspace, "executable"))
+        for prefix in (f"cd {workspace} && ", f"cd {workspace}&&", f"cd {workspace} ; ",
+                       f"cd {workspace};"):
+            while s.startswith(prefix):
+                s = s[len(prefix):]
+        return s
+    cmd_abs = _scrub(cmd)
+    setup_abs = _scrub(setup)
+    strength = sum(1 for k in ("stdout_contains", "stderr_contains", "stdout_regex",
+                               "stderr_regex", "files_exist") if expect.get(k))
+    try:
+        out, err, code, present = run_in_fresh(cmd_abs, setup_abs, expect.get("files_exist", []))
+    except Exception as e:
+        invalid.append({"check": c, "reason": f"run error: {type(e).__name__}: {e}"[:200]})
+        continue
+    problems = []
+    if "exit_code" in expect and code != expect["exit_code"]:
+        problems.append(f"exit_code {code} != {expect['exit_code']}")
+    for s in expect.get("stdout_contains", []):
+        if s not in out:
+            problems.append(f"stdout missing {s!r}")
+    for s in expect.get("stderr_contains", []):
+        if s not in err:
+            problems.append(f"stderr missing {s!r}")
+    for p in expect.get("stdout_regex", []):
+        if not re.search(p, out):
+            problems.append(f"stdout no match {p!r}")
+    for p in expect.get("stderr_regex", []):
+        if not re.search(p, err):
+            problems.append(f"stderr no match {p!r}")
+    for f in expect.get("files_exist", []):
+        if not present.get(f):
+            problems.append(f"file missing {f!r}")
+    if problems:
+        invalid.append({"check": c, "reason": "; ".join(problems)[:300]})
+    elif strength == 0:
+        weak.append(c)
+    else:
+        valid.append(c)
+
+json.dump({"valid": valid, "weak": weak, "invalid": invalid}, open(out_path, "w"), indent=1)
+print(f"VERIFIED valid={len(valid)} weak={len(weak)} invalid={len(invalid)}")
+'''
+
+
 def probe_phase(env, instance, model_config, out_dir, progress_manager=None) -> dict:
     """Phase 1: the probe session enumerates the whole CLI itself (help tree, error paths,
     edge cases) — no scripted pre-pass, the agent is more general and robust than a parser."""
@@ -108,39 +257,151 @@ def probe_phase(env, instance, model_config, out_dir, progress_manager=None) -> 
             logger.info(f"Pulled {artifact} for {instance['instance_id']}")
         except Exception as e:
             logger.error(f"probe phase did not produce {artifact}: {e}")
+    # Probe ends by validating its own checks: only assertions that actually pass against
+    # the real binary survive into plan. Pure program, no model.
+    verify_checks(env, out_dir)
     return info
 
 
-def plan_phase(env, instance, model_config, out_dir, progress_manager=None) -> dict:
-    """Phase 2: architecture + frozen interface contracts (main model)."""
-    info = run_phase(
-        env,
-        "plan",
-        system_template=PLAN_SYSTEM,
-        instance_template=PLAN_INSTANCE,
-        model_config=model_config,
-        agent_config={
-            "output_path": str(out_dir / "plan.traj.json"),
-            "step_limit": 160,
-            "cost_limit": 0,
-            "wall_time_limit_seconds": 3600,
-        },
-        instance=instance,
-        traj_path=out_dir / "plan.traj.json",
-    )
+def verify_checks(env, out_dir) -> dict:
+    """Final step of probe. Runs every probed check against the real binary in a clean
+    scratch dir; keeps only checks that actually pass, and separates out weak ones
+    (exit_code only). No model involved."""
+    checks_file = out_dir / "probe_checks.json"
+    if not checks_file.is_file():
+        logger.warning("No probe_checks.json; skipping check verification")
+        return {"valid": 0, "weak": 0, "invalid": 0}
+    (out_dir / "check_verifier.py").write_text(CHECK_VERIFIER_SRC)
+    container_push(env, out_dir / "check_verifier.py", "/workspace/check_verifier.py")
+    container_push(env, checks_file, "/workspace/probe_checks.json")
+    r = env.execute({"command": "cd /workspace && python3 check_verifier.py probe_checks.json validated_checks.json"})
+    logger.info(f"check verification: {r.get('output', '').strip()[:300]}")
     try:
-        container_pull(env, "/workspace/contracts.json", out_dir / "contracts.json")
-        logger.info(f"Pulled contracts.json for {instance['instance_id']}")
+        container_pull(env, "/workspace/validated_checks.json", out_dir / "validated_checks.json")
     except Exception as e:
-        logger.error(f"plan phase did not produce contracts.json: {e}")
+        logger.error(f"check verification produced no validated_checks.json: {e}")
+        return {"valid": 0, "weak": 0, "invalid": 0}
+    v = json.loads((out_dir / "validated_checks.json").read_text())
+    counts = {k: len(v[k]) for k in ("valid", "weak", "invalid")}
+    logger.info(f"Verified checks: {counts}")
+    for bad in v["invalid"][:10]:
+        logger.warning(f"  dropped: {bad['reason'][:120]}")
+    return counts
+
+
+def slicing_problems(specs: dict) -> list[str]:
+    """Reject module layouts and specs that would break parallel implementation.
+
+    Layout: a module with no checks is an internal package the user cannot invoke, and one
+    module owning most checks means a single session is crushed.
+
+    Spec shape: every module's spec must be a structured object, not free text, because
+    implement agents read it programmatically. It must also name the commands the module
+    owns - the one concept every CLI shares."""
+    modules = specs.get("modules", [])
+    if not modules:
+        return ["no modules"]
+    checks = [len(m.get("checks") or []) for m in modules]
+    total = sum(checks)
+    zero = sum(1 for c in checks if c == 0)
+    problems = []
+    if total and zero > len(modules) / 2:
+        problems.append(f"{zero}/{len(modules)} modules have zero checks - these look like "
+                        f"internal packages, not user-visible commands")
+    if total and max(checks) > total * 0.5 and len(modules) > 2:
+        heaviest = modules[checks.index(max(checks))]["name"]
+        problems.append(f"module '{heaviest}' owns {max(checks)}/{total} checks - split it by command")
+    # A module session gets MODULE_STEP_BUDGET steps and must spend most of them on
+    # writing the implementation, not on walking assertions. Measured across runs, a
+    # module needs roughly 20 steps of real work plus a few per check to run it and fix
+    # what it finds; a module whose checks alone would eat the budget never converges -
+    # it finishes whichever checks it reached and leaves the rest unverified while the
+    # behaviors it skipped regress. Split such modules by command.
+    max_checks = max((MODULE_STEP_BUDGET - 20) // 5, 6)
+    overloaded = [(m["name"], c) for m, c in zip(modules, checks) if c > max_checks]
+    if overloaded:
+        problems.append(
+            "; ".join(f"module '{n}' owns {c} checks (budget allows ~{max_checks}) - split it "
+                      f"into one module per command group so each session can run them all"
+                      for n, c in overloaded)
+        )
+    flat = [m["name"] for m in modules if not isinstance(m.get("spec"), dict)]
+    if flat:
+        problems.append(f"modules with free-text instead of a structured spec object: {flat} - "
+                        f"write each spec as a JSON object with named fields")
+    # Field names are the plan's choice; we only require that SOME field names the
+    # commands the module owns (commands / owns_commands / commands_owned ...).
+    nameless = [m["name"] for m in modules
+                if isinstance(m.get("spec"), dict)
+                and not any("command" in k.lower() and m["spec"][k] for k in m["spec"])]
+    if nameless:
+        problems.append(f"specs with no field naming the commands they own: {nameless}")
+    return problems
+
+
+def plan_phase(env, instance, model_config, out_dir, progress_manager=None) -> dict:
+    """Phase 2: architecture + frozen module specs (main model).
+
+    The module layout is validated after the first attempt; a layout that starves modules
+    of checks (internal-package slicing) is re-planned once with explicit feedback."""
+    feedback = ""
+    info: dict = {}
+    for attempt in (1, 2):
+        traj = out_dir / ("plan.traj.json" if attempt == 1 else "plan_retry.traj.json")
+        try:
+            info = run_phase(
+                env,
+                "plan" if attempt == 1 else "plan:retry",
+                system_template=PLAN_SYSTEM,
+                instance_template=PLAN_INSTANCE + feedback,
+                model_config=model_config,
+                agent_config={
+                    "output_path": str(traj),
+                    "step_limit": 160,
+                    "cost_limit": 0,
+                    "wall_time_limit_seconds": 3600,
+                },
+                instance=instance,
+                traj_path=traj,
+            )
+        except Exception as e:
+            # A transient API failure must not sink the whole run - retry once.
+            logger.error(f"plan attempt {attempt} raised {type(e).__name__}: {str(e)[:200]}")
+            feedback = ("\n\nRETRY: the previous attempt was interrupted by an infrastructure "
+                        "error. Re-do the full task: write specs.json first.")
+            continue
+        for artifact in ("specs.json", "ARCHITECTURE.md", "compile.sh"):
+            try:
+                container_pull(env, f"/workspace/{artifact}", out_dir / artifact)
+            except Exception as e:
+                logger.warning(f"plan attempt {attempt} did not produce {artifact}: {e}")
+        try:
+            container_pull(env, "/workspace/specs.json", out_dir / "specs.json")
+        except Exception as e:
+            logger.error(f"plan attempt {attempt} produced no specs.json: {e}")
+            feedback = ("\n\nRETRY: the previous attempt produced no specs.json. "
+                        "Write /workspace/specs.json FIRST.")
+            continue
+        problems = slicing_problems(json.loads((out_dir / "specs.json").read_text()))
+        if not problems:
+            logger.info(f"plan attempt {attempt}: module slicing OK")
+            return info
+        logger.warning(f"plan attempt {attempt}: bad module slicing -> {problems}")
+        feedback = ("\n\nRETRY: your previous module layout was rejected. Problems: "
+                    + "; ".join(problems)
+                    + ". Re-do specs.json slicing by USER-VISIBLE COMMAND: every module must "
+                    "own between one and about 45 checks from validated_checks.json - split a "
+                    "command's checks across sub-behaviors rather than dumping them all in one "
+                    "module, since each implement session only gets 150 steps.")
+    logger.error("plan slicing still poor after retry; continuing with the last specs")
     return info
 
 
 def implement_phase(env, instance, model_config, out_dir, workers: int, progress_manager=None) -> list:
     """Phase 3: read the module list from the plan, implement each module in its own session."""
-    contracts_file = out_dir / "contracts.json"
-    if not contracts_file.is_file():
-        logger.error("plan phase did not produce contracts.json; falling back to single-session implement")
+    specs_file = out_dir / "specs.json"
+    if not specs_file.is_file():
+        logger.error("plan phase did not produce specs.json; falling back to single-session implement")
         return [run_phase(env, "implement:fallback", system_template=MONOLITHIC_SYSTEM,
                           instance_template=MONOLITHIC_INSTANCE,
                           model_config=model_config,
@@ -166,9 +427,13 @@ def implement_phase(env, instance, model_config, out_dir, workers: int, progress
             model_config=model_config,
             agent_config={
                 "output_path": str(traj),
-                "step_limit": 150,
+                "step_limit": MODULE_STEP_BUDGET,
                 "cost_limit": 0,
-                "wall_time_limit_seconds": 5400,
+                # Scale the clock with the fan-out: N concurrent module sessions make the
+                # gateway 2-3x slower per call, so a fixed 90 min that is generous at
+                # workers=1 times out mid-work at workers=8. Keep the per-session step
+                # budget as the real limit and let the clock accommodate the latency.
+                "wall_time_limit_seconds": MODULE_WALL_TIME,
             },
             instance={**instance, "_template_vars": {"module": module}},
             traj_path=traj,
@@ -203,18 +468,28 @@ def implement_phase(env, instance, model_config, out_dir, workers: int, progress
                 logger.error(f"Module {name} attempt {attempt} raised {type(e).__name__}: {e}")
         return last
 
-    modules = json.loads(contracts_file.read_text())["modules"]
-    checks_file = out_dir / "probe_checks.json"
-    if checks_file.is_file():
-        checks = json.loads(checks_file.read_text())
-        assigned = sum(len(m.get("checks") or []) for m in modules)
-        logger.info(f"Checks: {len(checks)} probed, {assigned} assigned across {len(modules)} modules")
+    modules = json.loads(specs_file.read_text())["modules"]
+    validated_file = out_dir / "validated_checks.json"
+    if validated_file.is_file():
+        v = json.loads(validated_file.read_text())
+        expected = {c["command"] + "|" + str(c.get("setup", "")) for c in v["valid"]}
+        assigned_cmds = [c.get("command", "") + "|" + str(c.get("setup", ""))
+                         for m in modules for c in (m.get("checks") or [])]
+        assigned = len(assigned_cmds)
+        missing = expected - set(assigned_cmds)
+        duplicated = [k for k in set(assigned_cmds) if assigned_cmds.count(k) > 1]
+        logger.info(f"Checks: {len(v['valid'])} valid, {len(v['weak'])} weak, "
+                    f"{len(v['invalid'])} invalid; {assigned} assigned across {len(modules)} modules")
+        if missing:
+            logger.warning(f"CHECKS DROPPED by plan: {len(missing)} of {len(expected)} valid checks "
+                           f"missing from specs - those behaviours go unverified")
+        if duplicated:
+            logger.warning(f"CHECKS DUPLICATED across modules: {len(duplicated)}")
         if any(not m.get("checks") for m in modules):
-            logger.warning("Some modules have no checks assigned by plan - "
-                           f"they will implement without verification: "
-                           f"{[m['name'] for m in modules if not m.get('checks')]}")
+            logger.warning("Some modules have no checks assigned - they implement without "
+                           f"verification: {[m['name'] for m in modules if not m.get('checks')]}")
     else:
-        logger.warning("No probe_checks.json - implement runs without checks (legacy behavior)")
+        logger.warning("No validated_checks.json - implement runs without checks (legacy behavior)")
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as ex:
         results = list(ex.map(implement_one, modules))
@@ -256,7 +531,17 @@ def process_instance(instance: dict, output_dir: Path, config: dict, workers: in
             probe_cfg["model_name"] = probe_model
 
         phases = inst_config.get("phases", ["probe", "plan", "implement", "integrate"])
-        if "probe" in phases:
+        reuse_probe = inst_config.get("reuse_probe")
+        if reuse_probe:
+            # Fixed probe artifacts: skip probing so repeated runs measure only the
+            # downstream phases, not probe variance.
+            src = Path(reuse_probe) / iid
+            container_push(env, src / "validated_checks.json", "/workspace/validated_checks.json")
+            container_push(env, src / "probe_findings.json", "/workspace/probe_findings.json")
+            shutil.copy(src / "validated_checks.json", instance_dir / "validated_checks.json")
+            shutil.copy(src / "probe_findings.json", instance_dir / "probe_findings.json")
+            logger.info(f"Reused probe artifacts from {src}")
+        elif "probe" in phases:
             probe_phase(env, instance, probe_cfg, instance_dir, progress_manager)
         if "plan" in phases:
             progress_manager.update_instance_status(iid, "Planning")
@@ -381,6 +666,22 @@ reveal). Do not assume any particular tool type.
      variants. Enumerate every flag you can find and exercise each one.
    - Things --help cannot show: error messages, env vars, stdin handling, and any
      real execution you can do safely.
+   - HIDDEN AND DISABLED COMMANDS: --help lists only what the vendor chose to show. Real
+     CLIs, especially open-core/freemium tools, ship subcommands and flags that exist but
+     are gated behind a paid tier or merely undocumented. They respond instead of erroring
+     with "unknown command", and their exact refusal text is graded. Treat this as a
+     first-class surface: for every command GROUP you found, probe a standard set of
+     candidate subcommand names and record each response verbatim, abort text included:
+       test, plan, push, down, rm, checkpoint, apply, edit, include, exclude, lint,
+       fmt, validate, verify, init, migrate, import, export, sync, deploy, rollback,
+       status, list, show, get, set, config, auth, login
+     Also try flag variants that usually mark a gated feature (--include, --edit, --plan,
+     --dry-run on commands that lack it, alternate --format values). For each candidate
+     record: the command, the raw stdout/stderr, and the exit code - a refusal that names
+     the restriction is far more valuable than a generic unknown-command error, and it
+     tells you a feature area exists that you would otherwise never implement.
+   - Distinguish the three outcomes explicitly in your log: hidden-but-working, gated
+     (exists, refuses with a specific message), and nonexistent (unknown command).
 
 3. INPUT SURFACE  (this is where most hidden behavior lives)
    - Identify every KIND of input the tool consumes: command arguments, files it reads,
@@ -397,6 +698,28 @@ reveal). Do not assume any particular tool type.
    - If inputs reference external resources (URLs, schemes, providers, credentials,
      remote services), enumerate each referenced family WITHOUT real credentials and
      record the exact error. Infer the families from the README, not from guesswork.
+   - EMBEDDED EXPRESSION LANGUAGES: some flag values are not plain scalars but little
+     programs - template strings in double-brace or dollar-brace form, query/filter
+     expressions, format strings with verbs, or jq-like selectors. You can tell by the
+     syntax in the --help text or examples. When a flag looks like this, do NOT stop
+     after trying the one example from --help. The language itself is the behavior:
+       * BUILD THE COMPLETE FUNCTION INVENTORY - this is a deliverable, not an optional
+         nicety. A template engine has dozens of callable functions and the grader tests
+         them by NAME. Harvest the names from every source you have: all --format examples
+         in --help and README, the tool's documentation strings, and error output (call an
+         unknown function and see whether the error enumerates the valid set). Write the
+         inventory to a file as you go and record it in the findings log. Then exercise
+         EVERY name you found - one invocation each, with realistic data.
+       * expect NON-STANDARD, project-specific function names (colour codes, padding,
+         pluralisation, joins) alongside the generic ones - those bespoke functions are
+         exactly what a reimplementation misses, so hunt for them specifically.
+       * test the language's structural features, not just leaf functions: pipes/chaining,
+         conditionals, iteration/loops over collections, nesting, field/index access,
+         literal escaping, and how it renders non-ASCII or empty input.
+       * test its failure modes verbatim: syntax error, unknown function, wrong argument
+         type, malformed expression - each yields a distinct error text.
+     A template engine is usually dozens of graded behaviors on its own; covering only
+     the documented example leaves most of them unseen.
 
 4. OUTPUT SURFACE
    - For each command, capture stdout, stderr and exit code under: normal input, error
@@ -410,7 +733,10 @@ reveal). Do not assume any particular tool type.
 Budget discipline: cover BOTH the success paths (dimension 1) AND the breadth of
 subcommands x input kinds (dimensions 2-5). Do not let one starve the other - a tool
 you have not made succeed is under-probed, but so is one whose commands you never ran.
-Say 10-20 checks in probe_checks.json is a good target; only include ones you verified pass.
+probe_checks.json: write a check for EVERY subcommand and EVERY input family you
+observed - one per behavior, not a sample. There is no upper limit and a handful is
+not enough; each verified check pins down behavior that the implementation must match.
+Only include checks you verified pass.
 HOW TO FINISH: every response MUST include at least one bash tool call. When BOTH
 probe_findings.json (the full log) and probe_checks.json (the executable checks) are
 complete, submit with exactly:
@@ -425,54 +751,87 @@ Based on the probe results (/workspace/probe_findings.json — structured behavi
 observations) and README.md, produce:
 
 1. /workspace/ARCHITECTURE.md: command tree, module list, dependency graph, topological order.
-2. /workspace/contracts.json: {"modules": [{"name": ..., "cli_contract": ..., "depends_on": [...],
-   "golden_samples": [...]}]} — one entry per module, interface frozen.
+2. /workspace/specs.json: {"modules": [{"name": ..., "spec": ..., "depends_on": [...],
+   "golden_samples": [...]}]} — one entry per module, frozen once written.
+   Each "spec" MUST be a JSON object with named fields, never a free-text string.
+   Implement agents read these fields programmatically, so prose loses information they
+   need. At minimum a spec must list the "commands" the module owns (the subcommands a
+   user can type that route here). Beyond that, choose the fields that best describe THIS
+   tool's behaviour - for example flags, input formats, error texts, output structure -
+   and record the observations the probe actually made. Richer, better-organised specs
+   lead to more complete implementations; thin specs produce shallow work.
 3. A compilable skeleton: entry dispatcher + stub modules + **compile.sh that already
    builds the skeleton into ./executable offline** (vendored/replaced deps, GOPROXY=off).
    Later phases only edit modules; compile.sh keeps working throughout.
 4. Keep the module list to 8-10 modules (merge tiny related commands into one module);
    smaller count = fewer fixed overheads.
-5. Derive the module list from what the probe actually found, not from a fixed template.
+5. HOW TO SLICE MODULES - read carefully, this decides whether parallel implementation works:
+   Slice by USER-VISIBLE COMMAND / FEATURE, never by the target program's internal package
+   layout. Each module must own a set of subcommands a user can actually type, and that set
+   must have checks assigned to it.
+   - GOOD: "schema_apply" owns `schema apply`; "migrate_dir" owns `migrate new/hash/validate`;
+     "cli" owns the root command, help, version, license, completion.
+   - BAD: modules named after internal implementation packages you inferred from error-message
+     prefixes (realm, client, dbstate, engine, schemahcl, project) - those are the original
+     author's internal layering. A user cannot invoke them, so they receive ZERO checks and
+     the command-layer modules get crushed under all of them at once.
+   - Every module MUST end up with at least one check. If a candidate module would get none,
+     it is not a valid module - fold its behaviour into the command module that exposes it.
+   - The error-message prefixes in the probe results (e.g. `sql/sqlclient:`) tell you how the
+     original organises code. Use them to understand behaviour, NOT to define your modules.
+6. Derive the module list from what the probe actually found, not from a fixed template.
    For every KIND of input the probe identified (each config/file/identifier family and
-   its variants), make sure some module owns it and its cli_contract lists the exact
+   its variants), make sure some module owns it and its spec lists the exact
    behaviors observed - including the verbatim error texts for malformed/missing inputs.
    A family the probe observed but no module covers is a scoring gap.
-6. In each module's cli_contract, specify a LEAN regression script: a handful (~5-10)
+   BALANCE THE CHECKS ACROSS MODULES. Each implement session gets 150 steps and must
+   write the code AND run every check it is given, so a module loaded with too many
+   checks never finishes - it verifies the checks it reached first, leaves the rest
+   unrun, and the behaviors it skipped come out wrong. After assigning checks, count
+   them per module: if a module would take more than ~45, split it by command so each
+   command group gets its own module (e.g. `schema inspect` with 50 checks is not one
+   module - separate the plain inspection, the --format rendering, and the URL/schema
+   selection into modules that each own a handful). Fewer checks per module also means
+   each session actually finishes what it was given.
+7. In each module's spec, specify a LEAN regression script: a handful (~5-10)
    of representative cases, not an exhaustive suite. Exhaustive per-module test suites
    are the main cost driver and are not needed - the official grader tests behavior.
-7. ASSIGN THE CHECKS. /workspace/probe_checks.json contains executable checks distilled
-   from real runs. Attribute EVERY check to exactly one module (the module that owns the
-   command it exercises) and put it in that module as a "checks" list. A check whose
-   command spans modules goes to the module owning the command's primary entry point.
-   Do NOT drop checks and do NOT invent new ones - redistribute the given ones verbatim
-   (you may adjust only the "module" attribution). The implement phase runs each module's
-   checks to decide if its code is correct, so a missing attribution = an unverified module.
+8. ASSIGN THE CHECKS. /workspace/validated_checks.json contains executable checks that
+   were already run against the real binary and confirmed to pass. Its "valid" list holds
+   the strong checks; "weak" holds exit_code-only checks kept for reference only. Attribute
+   EVERY check in "valid" to exactly one module (the module that owns the command it
+   exercises) and put it in that module as a "checks" list. A check whose command spans
+   modules goes to the module owning the command's primary entry point. Do NOT drop checks
+   and do NOT invent new ones - redistribute the given ones verbatim (you may adjust only
+   the "module" attribution). Also place each "weak" check under the module that owns it,
+   inside that module's "reference_checks" list (NOT "checks"). The implement phase runs
+   only "checks" to decide if its code is correct; "reference_checks" are informational.
 
-CRITICAL ORDERING: write /workspace/contracts.json FIRST (before the skeleton, before
+CRITICAL ORDERING: write /workspace/specs.json FIRST (before the skeleton, before
 anything else) - the next phase reads it and fails without it. Then the skeleton, then
 compile.sh.
 
-Discipline: contracts are frozen once written. Do NOT implement module internals, do NOT
+Discipline: specs are frozen once written. Do NOT implement module internals, do NOT
 run the module test suites, do NOT debug the executable in this phase - that is the
-implement phase's job. Your only outputs are contracts.json, ARCHITECTURE.md, the skeleton
+implement phase's job. Your only outputs are specs.json, ARCHITECTURE.md, the skeleton
 and compile.sh. Stop as soon as compile.sh builds the skeleton offline.
 HOW TO FINISH: every response MUST include a bash tool call. When done, submit with
 exactly: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT as your final command."""
 
 PLAN_INSTANCE = """Task instance: {{ instance.instance_id }}
-Produce ARCHITECTURE.md, contracts.json and a skeleton WITH a working compile.sh."""
+Produce ARCHITECTURE.md, specs.json and a skeleton WITH a working compile.sh."""
 
 IMPLEMENT_SYSTEM = """You implement ONE module of a reverse-engineered codebase.
-The skeleton and contracts are already in /workspace. Read /workspace/contracts.json
+The skeleton and specs are already in /workspace. Read /workspace/specs.json
 and implement ONLY the module named in the task.
 
 Rules:
 - Only modify files belonging to your module (and its tests).
 - Probe ./executable to capture golden outputs for your module's behaviors; add a
-  regression script under your module's tests/ directory. SCALE IT TO YOUR CONTRACT:
-  at least one case per frozen behavior in your cli_contract (every subcommand,
-  every flag you committed to, every error path in the contract) - NOT a handful of
-  self-chosen easy cases. Do NOT build an exhaustive suite beyond the contract either.
+  regression script under your module's tests/ directory. SCALE IT TO YOUR SPEC:
+  at least one case per frozen behavior in your spec (every subcommand,
+  every flag you committed to, every error path in the spec) - NOT a handful of
+  self-chosen easy cases. Do NOT build an exhaustive suite beyond the spec either.
 - FIXTURE DIVERSITY (critical): a self-test passing on ONE hand-made fixture proves
   little. Vary your test data the way real users differ along the dimensions that apply
   to YOUR module's inputs - for example: with and without any auxiliary/companion files
@@ -491,15 +850,18 @@ Rules:
   A good status file lets integrate fix your gaps in few steps; a vague one wastes
   integrate's budget re-discovering them.
 - MANDATORY CHECKS (this is how correctness is judged - do NOT skip): your module entry
-  in /workspace/contracts.json has a "checks" list. These are REAL observations of the
-  reference executable, distilled into executable assertions. After your code compiles,
-  run every check for your module and make them pass. A check runs a command (after
-  optional "setup" shell) and asserts the "expect" block: exit_code, stdout/stderr
-  contains-substrings, stdout/stderr regexes, and files that must exist afterwards.
+  in /workspace/specs.json has a "checks" list. These are REAL observations of the
+  reference executable that were re-run against it and confirmed to pass, distilled into
+  executable assertions. After your code compiles, run every check for your module and make
+  them pass. A check runs a command (after optional "setup" shell) and asserts the "expect"
+  block: exit_code, stdout/stderr contains-substrings, stdout/stderr regexes, and files
+  that must exist afterwards.
   Build a small runner script (e.g. checks/run_<module>.sh) that executes each check from
   a CLEAN scratch dir (re-running "setup" each time), prints PASS/FAIL per check with the
   expected-vs-actual diff on failure, and exits non-zero if any fail. Use it to drive your
   fixes - the expected values ARE the ground truth from the real binary.
+  "reference_checks" (if present) are exit_code-only checks kept for context; they are NOT
+  part of the pass/fail bar - do not block your finish on them.
   VOLATILE fields: match with the regexes the check provides; do NOT hardcode a timestamp
   or version you saw once. If a check genuinely cannot pass because it encodes a
   non-reproducible value, note it in module_status.md and move on - but first assume you
@@ -509,7 +871,7 @@ Rules:
   perfection: you cannot see the other modules or the real grader, so polishing is blind.
 - DONE CRITERIA (strict): compiles + your module's CHECKS all pass (or the 2-round fix
   budget is exhausted) + your regression script covers EVERY frozen behavior in your
-  contract + module_status.md written. Finishing with only part of the contract covered
+  spec + module_status.md written. Finishing with only part of the spec covered
   is a FAILED module - use your remaining steps on uncovered behaviors instead.
 - module_status.md MUST report, per check: command, PASS/FAIL, and on failure the exact
   expected vs actual. The integrate phase uses this to fix what you could not.
@@ -520,13 +882,16 @@ Rules:
   after 3 consecutive text-only responses."""
 
 IMPLEMENT_INSTANCE = """Task instance: {{ instance.instance_id }}
-Implement module: {{ module.name }}
-Contract: {{ module.cli_contract }}
-Depends on: {{ module.depends_on | join(', ') }}
+Implement module: {{ module.get('name') }}
+Spec: {{ module.get('spec') }}
+Depends on: {{ module.get('depends_on', []) | join(', ') }}
 
-Your module's CHECKS (executable assertions distilled from the real reference binary;
-make these pass - see the MANDATORY CHECKS rule in your system prompt):
-{{ module.checks | tojson(indent=2) if module.checks else "[]  (no checks assigned to this module)" }}"""
+Your module's CHECKS (executable assertions distilled from the real reference binary and
+re-verified against it; make these pass - see the MANDATORY CHECKS rule in your system prompt):
+{{ module.get('checks', []) | tojson(indent=2) if module.get('checks') else "[]  (no checks assigned to this module)" }}
+
+Reference checks (exit_code-only, informational - not part of the pass/fail bar):
+{{ module.get('reference_checks', []) | tojson(indent=2) if module.get('reference_checks') else "[]" }}"""
 
 INTEGRATE_SYSTEM = """You are integrating independently-implemented modules of a reverse-engineered
 codebase in /workspace. The skeleton already has a working compile.sh - never rewrite
@@ -543,18 +908,18 @@ You have the GLOBAL view the module sessions lacked. Work in this order:
    modules reported as working - trust those and go straight to the listed failures and
    the dead modules. Build a prioritized fix list: dead modules and failures affecting
    many commands first, exotic edge cases last.
-2. Fix integration breakage first (compile errors, contract mismatches between modules).
+2. Fix integration breakage first (compile errors, spec mismatches between modules).
 3. Then spend remaining budget on the highest-value failures from the list. You will
    not fix everything - that is expected and fine. Prefer breadth (many commands
    basically right) over depth (one command perfect).
 4. STRESS WITH DIVERSE DATA: before finishing, run the core commands against fixture
    shapes the modules may not have tested - vary the input-family dimensions listed
-   in the contract (alternate naming/syntax conventions, with/without auxiliary files,
+   in the spec (alternate naming/syntax conventions, with/without auxiliary files,
    empty vs populated, malformed entries). Modules self-test on their own fixtures;
    your job is to catch where those fixtures were unrepresentative (e.g. failures on
    real-world input shapes the module never synthesized).
 
-Respect frozen contracts; if a contract is wrong, fix it centrally and note the change
+Respect frozen specs; if a spec is wrong, fix it centrally and note the change
 in /workspace/CHANGELOG.md.
 Done = ./compile.sh produces ./executable and all regressions pass.
 IMPORTANT: every response must include at least one bash tool call. When you are
@@ -564,7 +929,7 @@ never end with a plain text summary (that aborts the session)."""
 INTEGRATE_INSTANCE = """Task instance: {{ instance.instance_id }}
 Integrate and finalize the codebase."""
 
-# Fallback when plan produced no contracts.json: one full-session implement
+# Fallback when plan produced no specs.json: one full-session implement
 # (mirrors the official single-session prompt but seeds it with the probe artifacts).
 MONOLITHIC_SYSTEM = """You are re-implementing a black-box CLI tool from behavioral observation.
 The executable at ./executable is observation-only; write an original codebase that
@@ -579,7 +944,7 @@ Deliverables: source code + compile.sh that builds ./executable OFFLINE (vendore
 no network). Commit your work. Finish with `echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT`."""
 
 MONOLITHIC_INSTANCE = """Task instance: {{ instance.instance_id }}
-No module contracts were produced by the planning phase. Implement the full codebase
+No module specs were produced by the planning phase. Implement the full codebase
 yourself: study the probe artifacts, design your own module layout, and produce a
 working ./compile.sh and ./executable."""
 
@@ -597,6 +962,7 @@ def main(
     redo_existing: bool = typer.Option(False, "--redo-existing", help="Redo existing instances", rich_help_panel="Data selection"),
     config_spec: list[str] = typer.Option([str(DEFAULT_CONFIG_FILE)], "-c", "--config", help="Config files (merged left to right)", rich_help_panel="Basic"),
     phases: str = typer.Option("probe,plan,implement,integrate", "--phases", help="Comma-separated phases to run (debug/partial runs)", rich_help_panel="Advanced"),
+    reuse_probe: str = typer.Option("", "--reuse-probe", help="Reuse probe findings+checks from this run dir (skips probe; isolates downstream variance)", rich_help_panel="Advanced"),
     environment_class: str | None = typer.Option(None, "--environment-class", help="Environment type", rich_help_panel="Advanced"),
 ) -> None:
     # fmt: on
@@ -624,6 +990,7 @@ def main(
         "environment": {"environment_class": environment_class or UNSET},
         "model": {"model_name": model or UNSET},
         "probe_model_name": probe_model or UNSET,
+        "reuse_probe": reuse_probe or UNSET,
         "phases": [p.strip() for p in phases.split(",") if p.strip()],
     })
     config = recursive_merge(*configs)
